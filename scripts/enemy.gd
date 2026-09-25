@@ -2,6 +2,7 @@
 extends CharacterBody2D
 
 @export var boss := false
+@export var move_speed := 55.0
 var direction := -1.0
 var health := 3
 var max_health := 3
@@ -19,7 +20,7 @@ func _physics_process(delta: float) -> void:
         queue_redraw()
         return
     velocity += get_gravity() * delta
-    velocity.x = direction * (55.0 if not boss else 38.0)
+    velocity.x = direction * (move_speed if not boss else move_speed * 0.72)
     move_and_slide()
     if abs(global_position.x - start_x) > (130.0 if not boss else 210.0):
         direction *= -1.0

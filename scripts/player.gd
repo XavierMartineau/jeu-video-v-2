@@ -11,6 +11,11 @@ var invulnerable := false
 var animated_sprite: AnimatedSprite2D
 var health := 100
 var shoot_cooldown := 0.0
+var coyote_time := 0.0
+var jump_buffer := 0.0
+var dash_cooldown := 0.0
+var dash_available := true
+var is_dashing := false
 
 func _ready() -> void:
     spawn_position = global_position
@@ -18,10 +23,30 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
     shoot_cooldown = maxf(shoot_cooldown - delta, 0.0)
+    coyote_time = maxf(coyote_time - delta, 0.0)
+    jump_buffer = maxf(jump_buffer - delta, 0.0)
+    dash_cooldown = maxf(dash_cooldown - delta, 0.0)
     if not is_on_floor():
         velocity += get_gravity() * delta
-    if Input.is_action_just_pressed("jump") and is_on_floor():
+    else:
+        coyote_time = 0.12
+        dash_available = true
+    if Input.is_action_just_pressed("jump"):
+        jump_buffer = 0.12
+    if jump_buffer > 0.0 and coyote_time > 0.0:
         velocity.y = JUMP_VELOCITY
+        jump_buffer = 0.0
+        coyote_time = 0.0
+    if Input.is_action_just_pressed("dash") and dash_available and dash_cooldown <= 0.0:
+        var dash_direction := Input.get_axis("move_left", "move_right")
+        if is_zero_approx(dash_direction):
+            dash_direction = -1.0 if animated_sprite.flip_h else 1.0
+        velocity = Vector2(dash_direction * 720.0, 0.0)
+        dash_available = false
+        dash_cooldown = 0.7
+        is_dashing = true
+        await get_tree().create_timer(0.12).timeout
+        is_dashing = false
     if Input.is_action_just_pressed("shoot") and shoot_cooldown <= 0.0:
         shoot_cooldown = 0.35
         var shoot_direction := -1.0 if animated_sprite.flip_h else 1.0
@@ -31,6 +56,8 @@ func _physics_process(delta: float) -> void:
         velocity.x = move_toward(velocity.x, direction * SPEED, 42.0)
         animated_sprite.flip_h = direction < 0.0
     else:
+        velocity.x = move_toward(velocity.x, 0.0, 36.0)
+    if not is_dashing:
         velocity.x = move_toward(velocity.x, 0.0, 36.0)
     move_and_slide()
     if global_position.y > 900.0:
@@ -71,7 +98,7 @@ func create_wraith_animations() -> void:
     animated_sprite = AnimatedSprite2D.new()
     animated_sprite.sprite_frames = frames
     animated_sprite.animation = "idle"
-    animated_sprite.scale = Vector2(0.62, 0.62)
+    animated_sprite.scale = Vector2(0.18, 0.20)
     add_child(animated_sprite)
     animated_sprite.play("idle")
 

@@ -30,6 +30,7 @@ move_left={"deadzone": 0.5, "events": [Object(InputEventKey,"physical_keycode":6
 move_right={"deadzone": 0.5, "events": [Object(InputEventKey,"physical_keycode":68), Object(InputEventKey,"physical_keycode":4194313)]}
 jump={"deadzone": 0.5, "events": [Object(InputEventKey,"physical_keycode":32), Object(InputEventKey,"physical_keycode":87), Object(InputEventKey,"physical_keycode":4194320)]}
 shoot={"deadzone": 0.5, "events": [Object(InputEventKey,"physical_keycode":69)]}
+dash={"deadzone": 0.5, "events": [Object(InputEventKey,"physical_keycode":4194325), Object(InputEventKey,"physical_keycode":74)]}
 pause_game={"deadzone": 0.5, "events": [Object(InputEventKey,"physical_keycode":4194305)]}
 
 [physics]
