@@ -35,6 +35,11 @@ func build_level() -> void:
     create_exit(data.exit)
     create_player(data.spawn)
 
+func add_generated_child(node: Node) -> void:
+    add_child(node)
+    if Engine.is_editor_hint():
+        node.owner = self
+
 func create_player(spawn: Vector2) -> void:
     player = CharacterBody2D.new()
     player.set_script(load("res://scripts/player.gd"))
@@ -49,7 +54,7 @@ func create_player(spawn: Vector2) -> void:
     if game:
         player.connect("health_changed", Callable(game.hud, "update_health"))
         game.hud.update_health(100)
-    add_child(player)
+    add_generated_child(player)
     var camera := Camera2D.new()
     camera.position_smoothing_enabled = true
     camera.position_smoothing_speed = 7.0
@@ -83,7 +88,7 @@ func create_platform(rect: Rect2, color: Color, _solid := true) -> void:
     visual.polygon = PackedVector2Array([Vector2(-rect.size.x / 2, -rect.size.y / 2), Vector2(rect.size.x / 2, -rect.size.y / 2), Vector2(rect.size.x / 2, rect.size.y / 2), Vector2(-rect.size.x / 2, rect.size.y / 2)])
     visual.color = color
     body.add_child(visual)
-    add_child(body)
+    add_generated_child(body)
 
 func create_coin(position_value: Vector2) -> void:
     var coin := Area2D.new()
@@ -94,7 +99,7 @@ func create_coin(position_value: Vector2) -> void:
     circle.radius = 14.0
     shape.shape = circle
     coin.add_child(shape)
-    add_child(coin)
+    add_generated_child(coin)
 
 func create_moving_platform(position_value: Vector2, travel: Vector2) -> void:
     var platform := AnimatableBody2D.new()
@@ -106,7 +111,7 @@ func create_moving_platform(position_value: Vector2, travel: Vector2) -> void:
     box.size = Vector2(150, 20)
     shape.shape = box
     platform.add_child(shape)
-    add_child(platform)
+    add_generated_child(platform)
 
 func create_lever(position_value: Vector2) -> void:
     var lever := Area2D.new()
@@ -118,7 +123,7 @@ func create_lever(position_value: Vector2) -> void:
     shape.shape = circle
     lever.add_child(shape)
     lever.pulled.connect(_on_lever_pulled)
-    add_child(lever)
+    add_generated_child(lever)
 
 func create_enemy(position_value: Vector2, is_boss: bool) -> void:
     var enemy := CharacterBody2D.new()
@@ -130,7 +135,7 @@ func create_enemy(position_value: Vector2, is_boss: bool) -> void:
     box.size = Vector2(65 if is_boss else 45, 75 if is_boss else 48)
     shape.shape = box
     enemy.add_child(shape)
-    add_child(enemy)
+    add_generated_child(enemy)
 
 func create_exit(position_value: Vector2) -> void:
     exit_area = Area2D.new()
@@ -141,14 +146,14 @@ func create_exit(position_value: Vector2) -> void:
     shape.shape = box
     exit_area.add_child(shape)
     exit_area.body_entered.connect(_on_exit_entered)
-    add_child(exit_area)
+    add_generated_child(exit_area)
     lock_label = Label.new()
     lock_label.text = "VERROUILLE\n%d CRISTAUX" % required_coins
     lock_label.position = position_value + Vector2(-62, -76)
     lock_label.add_theme_color_override("font_color", Color("#f4c95d"))
     lock_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     lock_label.size = Vector2(125, 55)
-    add_child(lock_label)
+    add_generated_child(lock_label)
 
 func _on_lever_pulled() -> void:
     exit_unlocked = true
