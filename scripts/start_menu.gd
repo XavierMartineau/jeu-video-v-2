@@ -61,14 +61,14 @@ func update_language() -> void:
     language_button.text = "FR" if is_french else "EN"
     if is_mobile():
         platform_label.text = "PLATEFORME : MOBILE / PORTABLE"
-        controls_label.text = "CONTROLES\nGlisser gauche / droite pour bouger\nBoutons SAUT et TIR a l'ecran"
+        controls_label.text = "CONTROLES\nGlisser gauche / droite pour bouger\nBoutons SAUT, DASH et TIR a l'ecran"
         mobile_demo.text = "Les boutons tactiles seront actifs pendant la partie."
     else:
         platform_label.text = "PLATEFORME : PC"
-        controls_label.text = "CONTROLES\nA / D : se deplacer\nESPACE : sauter    E : tirer"
+        controls_label.text = "CONTROLES\nA / D : se deplacer\nESPACE : sauter    E : tirer    J / SHIFT : dash"
         mobile_demo.text = "Les controles mobiles sont masques sur PC."
     if not is_french:
         platform_label.text = "PLATFORM: MOBILE / HANDHELD" if is_mobile() else "PLATFORM: PC"
-        controls_label.text = "CONTROLS\nA / D: move\nSPACE: jump    E: shoot" if not is_mobile() else "CONTROLS\nSwipe left / right to move\nOn-screen JUMP and FIRE buttons"
+        controls_label.text = "CONTROLS\nA / D: move\nSPACE: jump    E: shoot    J / SHIFT: dash" if not is_mobile() else "CONTROLS\nSwipe left / right to move\nOn-screen JUMP, DASH and FIRE buttons"
         mobile_demo.text = "Touch controls are active during gameplay." if is_mobile() else "Touch controls are hidden on PC."
     start_button.text = "JOUER" if is_french else "PLAY"

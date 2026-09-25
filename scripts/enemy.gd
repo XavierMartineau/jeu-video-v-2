@@ -7,6 +7,8 @@ var direction := -1.0
 var health := 3
 var max_health := 3
 var start_x := 0.0
+var attack_cooldown := 1.8
+var enraged := false
 
 func _ready() -> void:
     start_x = global_position.x
@@ -20,6 +22,13 @@ func _physics_process(delta: float) -> void:
         queue_redraw()
         return
     velocity += get_gravity() * delta
+    if boss:
+        attack_cooldown -= delta
+        var target := get_tree().get_first_node_in_group("player") as CharacterBody2D
+        if target and attack_cooldown <= 0.0 and is_on_floor():
+            direction = signf(target.global_position.x - global_position.x)
+            velocity.y = -470.0 if not enraged else -560.0
+            attack_cooldown = 2.2 if not enraged else 1.35
     velocity.x = direction * (move_speed if not boss else move_speed * 0.72)
     move_and_slide()
     if abs(global_position.x - start_x) > (130.0 if not boss else 210.0):
@@ -32,6 +41,9 @@ func _physics_process(delta: float) -> void:
 
 func hit() -> void:
     health -= 1
+    if boss and not enraged and health <= max_health / 2:
+        enraged = true
+        move_speed *= 1.35
     if health <= 0:
         queue_free()
 

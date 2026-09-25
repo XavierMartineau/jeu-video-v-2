@@ -88,7 +88,8 @@ func create_pause_panel() -> void:
     pause_panel.add_child(restart)
 
 func update_level(number: int) -> void:
-    level_label.text = "SECTEUR %d / 4" % number
+    var names := ["VALLEE DES ECHOS", "MINES SUSPENDUES", "COEUR DU GEANT", "ARENE DU WRAITH"]
+    level_label.text = "%d / 4  %s" % [number, names[number - 1]]
 
 func update_coins(value: int, required: int) -> void:
     coin_label.text = "CRISTAUX %d / %d" % [value, required]
@@ -132,7 +133,8 @@ func create_mobile_controls() -> void:
     var right := create_touch_button(">", Vector2(118, 590), "move_right")
     var jump_button := create_touch_button("SAUT", Vector2(1030, 570), "jump")
     var shoot_button := create_touch_button("TIR", Vector2(1140, 570), "shoot")
-    for button in [left, right, jump_button, shoot_button]:
+    var dash_button := create_touch_button("DASH", Vector2(1030, 490), "dash")
+    for button in [left, right, jump_button, shoot_button, dash_button]:
         button.add_theme_font_size_override("font_size", 18)
 
 func create_touch_button(text_value: String, position_value: Vector2, action_name: String) -> Button:
