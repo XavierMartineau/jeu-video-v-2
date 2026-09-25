@@ -21,7 +21,7 @@ func build_level() -> void:
     var data := get_level_data()
     required_coins = data.coins.size()
     for platform in data.platforms:
-        create_platform(platform[0], platform[1], platform[2])
+        create_platform(platform[0], platform[1])
     for coin_position in data.coins:
         create_coin(coin_position)
     for moving in data.moving:
