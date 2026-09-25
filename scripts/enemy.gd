@@ -1,3 +1,4 @@
+@tool
 extends CharacterBody2D
 
 @export var boss := false
@@ -14,6 +15,9 @@ func _ready() -> void:
     queue_redraw()
 
 func _physics_process(delta: float) -> void:
+    if Engine.is_editor_hint():
+        queue_redraw()
+        return
     velocity += get_gravity() * delta
     velocity.x = direction * (55.0 if not boss else 38.0)
     move_and_slide()

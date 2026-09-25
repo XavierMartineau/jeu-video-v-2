@@ -1,3 +1,4 @@
+@tool
 extends AnimatableBody2D
 
 @export var travel := Vector2(0, 120)
@@ -10,6 +11,8 @@ func _ready() -> void:
     queue_redraw()
 
 func _physics_process(delta: float) -> void:
+    if Engine.is_editor_hint():
+        queue_redraw()
     elapsed = fmod(elapsed + delta, duration * 2.0)
     var phase := elapsed / duration
     if phase > 1.0:

@@ -1,3 +1,4 @@
+@tool
 extends Node2D
 
 signal level_completed
@@ -171,7 +172,13 @@ func _process(_delta: float) -> void:
     queue_redraw()
 
 func get_previous_coin_count() -> int:
-    return 0 if level_number == 1 else (4 if level_number == 2 else 9)
+    if level_number == 1:
+        return 0
+    if level_number == 2:
+        return 4
+    if level_number == 3:
+        return 9
+    return 15
 
 func reset_player() -> void:
     player.reset_to_spawn()
@@ -181,13 +188,15 @@ func get_level_data() -> Dictionary:
         return {"spawn": Vector2(140, 500), "exit": Vector2(2350, 530), "platforms": [ [Rect2(0, 620, 2600, 100), Color("#263b44")], [Rect2(0, 520, 310, 28), Color("#4aa3a2")], [Rect2(410, 470, 260, 28), Color("#4aa3a2")], [Rect2(780, 380, 260, 28), Color("#4aa3a2")], [Rect2(1150, 500, 260, 28), Color("#4aa3a2")], [Rect2(1510, 410, 260, 28), Color("#4aa3a2")], [Rect2(1900, 520, 430, 28), Color("#4aa3a2")] ], "coins": [Vector2(180, 470), Vector2(500, 420), Vector2(850, 330), Vector2(1220, 450)], "moving": [[Vector2(690, 500), Vector2(0, -150)], [Vector2(1780, 500), Vector2(0, -100)]], "levers": [Vector2(1450, 460)], "enemies": [Vector2(580, 410)], "boss": Vector2.ZERO}
     if level_number == 2:
         return {"spawn": Vector2(140, 500), "exit": Vector2(2400, 530), "platforms": [ [Rect2(0, 620, 2600, 100), Color("#303b52")], [Rect2(0, 520, 300, 28), Color("#6980a8")], [Rect2(470, 450, 250, 28), Color("#6980a8")], [Rect2(900, 350, 260, 28), Color("#6980a8")], [Rect2(1310, 470, 250, 28), Color("#6980a8")], [Rect2(1700, 360, 280, 28), Color("#6980a8")], [Rect2(2070, 520, 350, 28), Color("#6980a8")] ], "coins": [Vector2(150, 470), Vector2(530, 400), Vector2(960, 300), Vector2(1370, 420), Vector2(1800, 310)], "moving": [[Vector2(760, 480), Vector2(0, -170)], [Vector2(1590, 550), Vector2(0, -180)]], "levers": [Vector2(1240, 430), Vector2(2000, 480)], "enemies": [Vector2(590, 400), Vector2(1450, 420)], "boss": Vector2.ZERO}
+    if level_number == 4:
+        return {"spawn": Vector2(150, 500), "exit": Vector2(2380, 530), "platforms": [ [Rect2(0, 620, 2600, 100), Color("#241d32")], [Rect2(0, 520, 350, 28), Color("#8c465d")], [Rect2(480, 450, 260, 28), Color("#8c465d")], [Rect2(820, 540, 300, 28), Color("#8c465d")], [Rect2(1200, 390, 260, 28), Color("#8c465d")], [Rect2(1510, 500, 260, 28), Color("#8c465d")], [Rect2(1800, 400, 300, 28), Color("#8c465d")], [Rect2(2150, 520, 330, 28), Color("#8c465d")] ], "coins": [Vector2(180, 470), Vector2(550, 410), Vector2(900, 500), Vector2(1280, 350)], "moving": [[Vector2(760, 500), Vector2(0, -190)], [Vector2(1480, 570), Vector2(0, -170)]], "levers": [Vector2(1120, 570), Vector2(2100, 450)], "enemies": [Vector2(620, 400), Vector2(1600, 450)], "boss": Vector2(1940, 325)}
     return {"spawn": Vector2(140, 500), "exit": Vector2(2400, 530), "platforms": [ [Rect2(0, 620, 2600, 100), Color("#4b354d")], [Rect2(0, 520, 330, 28), Color("#b15b5b")], [Rect2(510, 430, 230, 28), Color("#b15b5b")], [Rect2(900, 520, 260, 28), Color("#b15b5b")], [Rect2(1350, 390, 280, 28), Color("#b15b5b")], [Rect2(1800, 460, 250, 28), Color("#b15b5b")], [Rect2(2150, 520, 320, 28), Color("#b15b5b")] ], "coins": [Vector2(170, 470), Vector2(570, 380), Vector2(960, 470), Vector2(1420, 340), Vector2(1870, 410), Vector2(2220, 470)], "moving": [[Vector2(780, 500), Vector2(0, -170)], [Vector2(1670, 520), Vector2(0, -150)]], "levers": [Vector2(1170, 570)], "enemies": [Vector2(630, 380)], "boss": Vector2(1980, 390)}
 
 func _draw() -> void:
-    var skies: Array[Color] = [Color("#183542"), Color("#252f4a"), Color("#3d2944")]
+    var skies: Array[Color] = [Color("#183542"), Color("#252f4a"), Color("#3d2944"), Color("#241d32")]
     var sky: Color = skies[level_number - 1]
     draw_rect(Rect2(0, 0, 2600, 720), sky)
     for index in 10:
         var x := float(index * 280 + 80)
         draw_circle(Vector2(x, 125 + (index % 3) * 55), 2.5, Color("#b8f2e6"))
-    draw_string(ThemeDB.fallback_font, Vector2(72, 110), ["LA VALLEE DES ECHOS", "LES MINES SUSPENDUES", "LE COEUR DU GEANT"][level_number - 1], HORIZONTAL_ALIGNMENT_LEFT, -1, 28, Color("#ffffff80"))
+    draw_string(ThemeDB.fallback_font, Vector2(72, 110), ["LA VALLEE DES ECHOS", "LES MINES SUSPENDUES", "LE COEUR DU GEANT", "ARENE DU WRAITH" ][level_number - 1], HORIZONTAL_ALIGNMENT_LEFT, -1, 28, Color("#ffffff80"))

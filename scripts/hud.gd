@@ -48,6 +48,8 @@ func _ready() -> void:
     pause_button.pressed.connect(func(): get_parent().toggle_pause())
     add_child(pause_button)
     create_pause_panel()
+    if OS.has_feature("mobile"):
+        create_mobile_controls()
 
 func make_label(text_value: String, position_value: Vector2, font_size: int, color: Color) -> Label:
     var label := Label.new()
@@ -86,7 +88,7 @@ func create_pause_panel() -> void:
     pause_panel.add_child(restart)
 
 func update_level(number: int) -> void:
-    level_label.text = "SECTEUR %d / 3" % number
+    level_label.text = "SECTEUR %d / 4" % number
 
 func update_coins(value: int, required: int) -> void:
     coin_label.text = "CRISTAUX %d / %d" % [value, required]
@@ -124,3 +126,22 @@ func show_victory() -> void:
 func show_game_over() -> void:
     message_label.text = "MISSION ECHOUEE\nAppuie sur ECHAP puis recommence le niveau."
     message_label.visible = true
+
+func create_mobile_controls() -> void:
+    var left := create_touch_button("<", Vector2(34, 590), "move_left")
+    var right := create_touch_button(">", Vector2(118, 590), "move_right")
+    var jump_button := create_touch_button("SAUT", Vector2(1030, 570), "jump")
+    var shoot_button := create_touch_button("TIR", Vector2(1140, 570), "shoot")
+    for button in [left, right, jump_button, shoot_button]:
+        button.add_theme_font_size_override("font_size", 18)
+
+func create_touch_button(text_value: String, position_value: Vector2, action_name: String) -> Button:
+    var button := Button.new()
+    button.text = text_value
+    button.position = position_value
+    button.size = Vector2(70, 70)
+    button.modulate = Color(1, 1, 1, 0.82)
+    button.button_down.connect(func(): Input.action_press(action_name))
+    button.button_up.connect(func(): Input.action_release(action_name))
+    add_child(button)
+    return button

@@ -11,7 +11,9 @@ var player_lives := 3
 
 func _ready() -> void:
     process_mode = Node.PROCESS_MODE_ALWAYS
-    load_level(1)
+    var start_level := int(get_tree().root.get_meta("start_level", 1))
+    get_tree().root.remove_meta("start_level")
+    load_level(start_level)
 
 func _unhandled_input(event: InputEvent) -> void:
     if event.is_action_pressed("pause_game"):
@@ -21,7 +23,7 @@ func load_level(number: int) -> void:
     if is_instance_valid(current_level):
         current_level.queue_free()
     level_number = number
-    var scene_path := "res://scenes/level_%d.tscn" % number
+    var scene_path := "res://scenes/level-4-boss-fight.tscn" if number == 4 else "res://scenes/level_%d.tscn" % number
     var packed_level := load(scene_path)
     current_level = packed_level.instantiate()
     current_level.game = self
@@ -34,19 +36,21 @@ func load_level(number: int) -> void:
     hud.update_lives(player_lives)
 
 func _on_level_completed() -> void:
-    if level_number < 3:
+    if level_number < 4:
         hud.show_message("NIVEAU %d TERMINE !" % level_number, "Le prochain secteur est debloque")
         await get_tree().create_timer(1.6).timeout
         load_level(level_number + 1)
     else:
-        hud.show_victory()
+        get_tree().paused = false
+        get_tree().change_scene_to_file("res://scenes/victory.tscn")
 
 func _on_player_died() -> void:
     player_lives -= 1
     hud.update_lives(player_lives)
     if player_lives <= 0:
-        hud.show_game_over()
-        get_tree().paused = true
+        get_tree().paused = false
+        get_tree().root.set_meta("defeat_level", level_number)
+        get_tree().change_scene_to_file("res://scenes/game_over.tscn")
     else:
         hud.show_message("AIE !", "Retour au dernier point de depart")
         await get_tree().create_timer(0.8).timeout
