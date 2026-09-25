@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="384" height="96" viewBox="0 0 384 96">
+  <title>UI icon sprite sheet</title>
+  <rect width="384" height="96" fill="none"/>
+  <g transform="translate(0 0)"><circle cx="48" cy="48" r="31" fill="#f4c95d"/><circle cx="48" cy="48" r="21" fill="#ffe8a3"/><path d="M40 29l15 38M56 29L41 67" stroke="#c58b2c" stroke-width="4"/></g>
+  <g transform="translate(96 0)"><circle cx="48" cy="48" r="32" fill="#e86f51"/><path d="M30 43h36M30 54h36" stroke="#fff1e2" stroke-width="6"/></g>
+  <g transform="translate(192 0)"><circle cx="48" cy="48" r="32" fill="#4aa3a2"/><path d="M32 48h32M48 32v32" stroke="#b8f2e6" stroke-width="7"/></g>
+  <g transform="translate(288 0)"><circle cx="48" cy="48" r="32" fill="#263b44"/><path d="M32 36l32 24M64 36L32 60" stroke="#b8f2e6" stroke-width="6"/></g>
+</svg>

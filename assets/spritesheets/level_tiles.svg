@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="256" viewBox="0 0 512 256">
+  <title>Level tiles sprite sheet</title>
+  <rect width="512" height="256" fill="none"/>
+  <!-- Sector 1 teal stone tiles -->
+  <rect x="0" y="0" width="64" height="64" rx="6" fill="#4aa3a2"/>
+  <path d="M0 50h64M14 0v18M44 50v14" stroke="#b8f2e6" stroke-width="5" opacity=".65"/>
+  <rect x="64" y="0" width="64" height="64" rx="6" fill="#263b44"/>
+  <path d="M0 14h64M0 47h64M18 0v14M48 14v33M28 47v17" stroke="#4aa3a2" stroke-width="4" opacity=".8"/>
+  <!-- Sector 2 blue mine tiles -->
+  <rect x="128" y="0" width="64" height="64" rx="6" fill="#6980a8"/>
+  <path d="M0 52h64M10 0l20 22M52 0L34 24M20 52l14-18" stroke="#c9d9ff" stroke-width="5" opacity=".7"/>
+  <rect x="192" y="0" width="64" height="64" rx="6" fill="#303b52"/>
+  <path d="M0 18h64M0 46h64M23 0v18M46 18v28M15 46v18" stroke="#6980a8" stroke-width="4"/>
+  <!-- Sector 3 red volcanic tiles -->
+  <rect x="256" y="0" width="64" height="64" rx="6" fill="#b15b5b"/>
+  <path d="M0 51h64M16 0l12 22M48 0L32 28M26 51l10-17" stroke="#ffd3a5" stroke-width="5" opacity=".75"/>
+  <rect x="320" y="0" width="64" height="64" rx="6" fill="#4b354d"/>
+  <path d="M0 15h64M0 47h64M18 0v15M49 15v32M27 47v17" stroke="#b15b5b" stroke-width="4"/>
+  <!-- Moving platform and hazard -->
+  <rect x="384" y="0" width="128" height="64" rx="8" fill="#17212b"/>
+  <rect x="396" y="16" width="104" height="22" rx="4" fill="#4aa3a2"/>
+  <path d="M404 24h88" stroke="#b8f2e6" stroke-width="4"/>
+  <path d="M396 55l12-16 12 16 12-16 12 16 12-16 12 16 12-16 12 16" fill="none" stroke="#e86f51" stroke-width="4"/>
+  <!-- Decorative background panels -->
+  <rect x="0" y="80" width="160" height="176" rx="10" fill="#183542"/>
+  <path d="M24 220l30-78 26 38 28-70 34 110z" fill="#263b44"/>
+  <circle cx="122" cy="120" r="5" fill="#b8f2e6"/>
+  <rect x="176" y="80" width="160" height="176" rx="10" fill="#252f4a"/>
+  <path d="M194 232l40-96 24 45 32-82 28 133z" fill="#303b52"/>
+  <circle cx="290" cy="124" r="5" fill="#c9d9ff"/>
+  <rect x="352" y="80" width="160" height="176" rx="10" fill="#3d2944"/>
+  <path d="M370 232l36-94 28 43 30-79 30 130z" fill="#4b354d"/>
+  <circle cx="464" cy="120" r="5" fill="#ffd3a5"/>
+</svg>
