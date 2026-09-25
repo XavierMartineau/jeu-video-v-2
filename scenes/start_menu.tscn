@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://dp8f4cuernw25"]
 
-[ext_resource path="res://scripts/start_menu.gd" type="Script" id="1_start_menu"]
+[ext_resource type="Script" uid="uid://bdnyxegg46s0n" path="res://scripts/start_menu.gd" id="1_start_menu"]
 
-[node name="StartMenu" type="Control"]
+[node name="StartMenu" type="Control" unique_id=210702421]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
