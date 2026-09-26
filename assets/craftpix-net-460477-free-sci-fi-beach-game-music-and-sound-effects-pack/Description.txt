@@ -1,0 +1,54 @@
+Pack No. 8 includes:
+
+## 5 Music Tracks
+
+* Main_theme_Beach_Location — main beach theme
+* Battle_theme_Beach_Location — battle theme for a beach location
+* Beach_Party_theme — theme for a beach party or an evening beach scene
+* Beach_Party_Fight_theme — battle theme for a fight that breaks out during a beach party or on a beach at night
+* Alternative_Beach_theme_positive_vibrations — upbeat beach melody with a Hawaiian-inspired mood
+
+## Sounds Inspired by the Beach Tileset Pack
+
+* Sea_shore — background ambience of the sea and coastline
+
+## Sounds Inspired by the Beach Enemies Pack
+
+* Speaker_Bot_attack — robot attack and arm-swing sound
+* Spray — aerosol or spray-can sound
+* Hoverboard_1_loopable / Hoverboard_2_loopable — two variations of a hovering-platform sound
+
+## Sounds Inspired by the Beach Bosses Pack
+
+* Iron_Shark_bite — mechanical shark bite
+* Iron_Shark_laser — mechanical shark attack, combining a roar with a laser sound
+* Motorboat_drive_1 / Motorboat_drive_2 — two variations of a motorboat or vehicle engine sound
+* Human_Emulator_attack_hand_swing — robot attack and arm-swing sound
+
+## Sounds Inspired by the Beach Crowd Pack
+
+* NPC_girl_talk — female NPC chatter
+* NPC_girl_laughter — female NPC laughter
+* NPC_girl_scream — female NPC screaming in panic, for example, when a battle breaks out on the beach
+* NPC_guy_talk — male NPC chatter
+* NPC_guy_laughter — male NPC laughter
+* NPC_guy_scream — male NPC screaming or calling for help
+
+## Sounds Inspired by the Water Animations Pack
+
+* Jump_into_water — sound of jumping into water
+* Drowning — character drowning and gasping for air
+* Surfacing — surfacing and splashing sound
+* Deep_breath — character taking a deep breath after emerging from the water
+* Swimming_splash_1 through Swimming_splash_4 — four variations of splashing sounds while swimming
+
+## Sounds Inspired by the Food Icons Packs
+
+* Can_of_soda_opening — sound of opening a soda can
+* Craft_drinks — drink-crafting sounds, including mixing and pouring
+* Drinks_a_drink — drinking sounds, including sipping and exhaling
+* Chews_and_crunches — crunchy eating sounds suitable for snacks such as chips or cookies
+* Food_crafting_Vegetable_cutting — food-crafting sound of vegetables being chopped on a cutting board
+* Frying — food-crafting sound of frying and cooking
+* Eats_with_cutlery — eating sounds with cutlery clinking against a plate, suitable for cafeteria scenes
+
