@@ -1,8 +1,0 @@
-{
-  "servers": {
-    "godot": {
-      "command": "uvx",
-      "args": ["--with", "mcp<2", "godot-mcp"]
-    }
-  }
-}
