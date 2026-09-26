@@ -32,32 +32,21 @@ body::before {
   inset: 0;
   z-index: -2;
   content: "";
-  opacity: 0.48;
+  opacity: 0.82;
   background:
     linear-gradient(
       90deg,
-      rgba(11, 18, 19, 0.98) 0%,
-      rgba(11, 18, 19, 0.76) 48%,
-      rgba(11, 18, 19, 0.96) 100%
+      rgba(11, 18, 19, 0.9) 0%,
+      rgba(11, 18, 19, 0.42) 52%,
+      rgba(11, 18, 19, 0.84) 100%
     ),
-    url("../../assets/runtime/spritesheets/backround/cave (1).png") center /
-      cover,
-    url("../../assets/runtime/spritesheets/backround/puhzil.png") center / cover;
-  filter: saturate(0.65) contrast(1.18);
+    url("../../assets/pack/backgrounds/post-apocalyptic/PNG/Postapocalypce3/Bright/postapocalypse3.png")
+      center / cover;
+  filter: saturate(0.8) contrast(1.12);
 }
 
 body::after {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  content: "";
-  opacity: 0.16;
-  background:
-    linear-gradient(rgba(214, 237, 104, 0.08), rgba(11, 18, 19, 0.16)),
-    url("../../assets/runtime/spritesheets/backround/asset_pierre.png") center /
-      cover;
-  mix-blend-mode: screen;
+  display: none;
 }
 
 a {
@@ -94,6 +83,7 @@ a {
 }
 
 .home-tools {
+  justify-content: flex-end;
   gap: 8px;
 }
 
@@ -108,7 +98,6 @@ a {
     monospace;
   letter-spacing: 0.08em;
 }
-
 .tool-button {
   padding: 9px 10px;
 }
