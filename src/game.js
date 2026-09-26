@@ -14,15 +14,15 @@ const WORLD_WIDTH = 5200;
 const WORLD_HEIGHT = 720;
 const assets = {};
 const assetPaths = {
-  player: "assets/sprites/Player_15.png",
-  enemy: "assets/sprites/Enemie_15.png",
-  coin: "assets/sprites/coin_gold.png",
-  block: "assets/sprites/terrain_grass_block.png",
-  blockTop: "assets/sprites/terrain_grass_horizontal_middle.png",
-  flag: "assets/sprites/flag_green_a.png",
-  spike: "assets/sprites/spikes.png",
-  bush: "assets/sprites/bush.png",
-  heart: "assets/sprites/heart.png",
+  player: "assets/runtime/sprites/Player_15.png",
+  enemy: "assets/runtime/sprites/Enemie_15.png",
+  coin: "assets/runtime/sprites/coin_gold.png",
+  block: "assets/runtime/sprites/terrain_grass_block.png",
+  blockTop: "assets/runtime/sprites/terrain_grass_horizontal_middle.png",
+  flag: "assets/runtime/sprites/flag_green_a.png",
+  spike: "assets/runtime/sprites/spikes.png",
+  bush: "assets/runtime/sprites/bush.png",
+  heart: "assets/runtime/sprites/heart.png",
 };
 
 Object.entries(assetPaths).forEach(([name, path]) => {
@@ -32,11 +32,11 @@ Object.entries(assetPaths).forEach(([name, path]) => {
 });
 
 const sounds = {
-  jump: new Audio("assets/audio/jump.wav"),
-  coin: new Audio("assets/audio/powerup.wav"),
-  hit: new Audio("assets/audio/sharp-punch-soundbible.mp3"),
+  jump: new Audio("assets/runtime/audio/jump.wav"),
+  coin: new Audio("assets/runtime/audio/powerup.wav"),
+  hit: new Audio("assets/runtime/audio/sharp-punch-soundbible.mp3"),
   win: new Audio(
-    "assets/audio/brass-fanfare-with-timpani-and-winchimes-reverberated-146260.mp3",
+    "assets/runtime/audio/brass-fanfare-with-timpani-and-winchimes-reverberated-146260.mp3",
   ),
 };
 Object.values(sounds).forEach((sound) => {

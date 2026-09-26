@@ -36,20 +36,22 @@ Les ressources utilisées ou prévues pour le projet proviennent des sources sui
 
 ## Structure
 
-- `index.html` : interface et canvas du jeu
-- `style.css` : style de l'interface
-- `game.js` : logique du jeu
-- `assets/` : images et sons du projet
+- `index.html` : point d'entrée du jeu
+- `src/game.js` : logique du jeu et boucle de gameplay
+- `src/styles/main.css` : styles de l'interface
+- `assets/runtime/` : ressources chargées par le jeu
+- `assets/pack/` : packs sources classés par type
 
 Les assets sont séparés entre les ressources utilisées directement par le jeu
 et les packs sources conservés dans une structure dédiée :
 
 ```text
 assets/
-├── audio/              # sons utilisés par le jeu
-├── sprites/            # images utilisées par le jeu
-├── spritesheets/       # feuilles de sprites utilisées par le jeu
-└── pack/               # packs sources et leurs licences
+├── runtime/             # ressources directement utilisées par le jeu
+│   ├── audio/           # sons et musiques
+│   ├── sprites/         # images des entités et objets
+│   └── spritesheets/    # feuilles de sprites
+└── pack/                # packs sources et leurs licences
 	├── icons/           # icônes, objets et équipements
 	├── tilesets/        # décors et environnements
 	├── world/           # personnages, ennemis, objets et tuiles
