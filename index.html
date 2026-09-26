@@ -20,17 +20,34 @@
       </header>
       <section class="game-frame" aria-label="Jeu de plateforme Skybound Run">
         <canvas id="game" width="1280" height="720"></canvas>
-        <div id="start-screen" class="screen-panel">
-          <p class="eyebrow">MISSION 01</p>
-          <h1>Skybound<br /><em>Run</em></h1>
-          <p class="intro">
-            Traverse les falaises, récupère les pièces et atteins le drapeau
-            avant la nuit.
-          </p>
+        <div id="start-screen" class="start-menu">
+          <div class="menu-heading">
+            <p class="eyebrow">SKYBOUND RUN // PROTOCOLE DE SURVIE</p>
+            <h1>Le dernier<br /><em>passage</em></h1>
+            <p class="intro">
+              Une course. Une frontière. Aucun retour en arrière.
+            </p>
+          </div>
+          <div class="menu-grid">
+            <section class="mission-card" aria-labelledby="mission-title">
+              <p class="card-label">MISSION ACTIVE</p>
+              <h2 id="mission-title">Traverser le secteur 01</h2>
+              <p>
+                Atteins le drapeau vert, récupère les ressources et garde tes
+                trois points de vitalité.
+              </p>
+            </section>
+            <section class="controls-card" aria-labelledby="controls-title">
+              <p class="card-label" id="controls-title">COMMANDES</p>
+              <div class="control-row"><span>COURIR</span><b>A / D</b></div>
+              <div class="control-row"><span>SAUTER</span><b>ESPACE</b></div>
+              <div class="control-row"><span>TACTILE</span><b>ÉCRAN</b></div>
+            </section>
+          </div>
           <button id="start-button" class="primary-button">
-            JOUER <span>→</span>
+            LANCER LA MISSION <span>→</span>
           </button>
-          <p class="hint">A / D ou ← / → pour courir · Espace pour sauter</p>
+          <p class="menu-status"><span></span>SYSTÈME PRÊT / SECTEUR 01</p>
         </div>
         <div id="end-screen" class="screen-panel hidden">
           <p id="end-kicker" class="eyebrow">MISSION ACCOMPLIE</p>

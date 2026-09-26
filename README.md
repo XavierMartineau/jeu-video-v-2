@@ -18,6 +18,7 @@ Les ressources utilisées ou prévues pour le projet proviennent des sources sui
 
 ### Objets et personnages post-apocalyptiques
 
+- [Raven Fantasy Icons - Clockwork Raven](https://clockworkraven.itch.io/raven-fantasy-icons)
 - [Post Apocalypse Medicine Icons - CraftPix](https://craftpix.net/freebies/free-post-apocalypse-medicine-512x512-icons/)
 - [Post Apocalypse Melee Weapon Icons - CraftPix](https://craftpix.net/freebies/free-post-apocalypse-melee-weapon-512x512-icons/)
 - [Post Apocalypse Crafting and Resource Icons - CraftPix](https://craftpix.net/freebies/free-post-apocalypse-crafting-and-resource-icons/)

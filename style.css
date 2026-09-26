@@ -74,15 +74,23 @@ canvas {
   height: auto;
   image-rendering: pixelated;
 }
-.screen-panel {
+.screen-panel,
+.start-menu {
   position: absolute;
   left: 8.5%;
-  top: 13%;
-  width: min(420px, 72%);
-  padding: 36px 38px;
-  background: rgba(9, 17, 28, 0.84);
+  top: 10%;
+  width: min(720px, 78%);
+  padding: 34px 40px 30px;
+  background: rgba(9, 17, 28, 0.9);
+  border: 1px solid rgba(212, 243, 106, 0.35);
   border-left: 4px solid var(--lime);
   backdrop-filter: blur(8px);
+}
+.start-menu {
+  min-height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .hidden {
   display: none !important;
@@ -119,6 +127,50 @@ h2 {
   font-size: 12px;
   line-height: 1.75;
 }
+.menu-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: 1px;
+  margin: 30px 0 25px;
+  background: rgba(247, 241, 223, 0.16);
+}
+.mission-card,
+.controls-card {
+  padding: 18px 20px;
+  background: rgba(18, 30, 45, 0.9);
+}
+.card-label {
+  margin: 0 0 12px;
+  color: var(--lime);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+}
+.mission-card h2 {
+  margin-bottom: 10px;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: 0;
+}
+.mission-card p:last-child {
+  margin: 0;
+  color: #b6c0bb;
+  font-size: 10px;
+  line-height: 1.6;
+}
+.control-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 0;
+  border-top: 1px solid rgba(247, 241, 223, 0.12);
+  color: #b6c0bb;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+}
+.control-row b {
+  color: var(--ink);
+  font-weight: 700;
+}
 .primary-button {
   border: 0;
   padding: 14px 20px;
@@ -147,6 +199,20 @@ h2 {
   color: #8f9d9a;
   font-size: 9px;
   line-height: 1.6;
+}
+.menu-status {
+  margin: 15px 0 0;
+  color: #8f9d9a;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+}
+.menu-status span {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 8px;
+  background: var(--lime);
+  box-shadow: 0 0 10px var(--lime);
 }
 .hud {
   position: absolute;
@@ -216,11 +282,13 @@ h2 {
   .brand-mark {
     font-size: 15px;
   }
-  .screen-panel {
+  .screen-panel,
+  .start-menu {
     left: 7%;
-    top: 15%;
-    padding: 23px 22px;
     width: 80%;
+    top: 8%;
+    min-height: 84%;
+    padding: 23px 22px;
   }
   .intro {
     margin: 18px 0 20px;
@@ -228,6 +296,17 @@ h2 {
   }
   .hint {
     display: none;
+  }
+  .menu-grid {
+    grid-template-columns: 1fr;
+    margin: 20px 0;
+  }
+  .mission-card,
+  .controls-card {
+    padding: 14px;
+  }
+  .mission-card h2 {
+    font-size: 20px;
   }
   .hud {
     top: 12px;
