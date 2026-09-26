@@ -1,0 +1,496 @@
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Space+Mono:wght@400;700&display=swap");
+
+:root {
+  --paper: #e8ead9;
+  --muted: #8e9b8d;
+  --night: #0b1213;
+  --panel: #111c1b;
+  --acid: #d6ed68;
+  --amber: #e7b45d;
+  --rust: #ec765a;
+  --line: rgba(232, 234, 217, 0.18);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--paper);
+  background: var(--night);
+  font-family: "Space Mono", monospace;
+}
+
+body::before {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  content: "";
+  opacity: 0.48;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(11, 18, 19, 0.98) 0%,
+      rgba(11, 18, 19, 0.76) 48%,
+      rgba(11, 18, 19, 0.96) 100%
+    ),
+    url("../../assets/runtime/spritesheets/backround/cave (1).png") center /
+      cover,
+    url("../../assets/runtime/spritesheets/backround/puhzil.png") center / cover;
+  filter: saturate(0.65) contrast(1.18);
+}
+
+body::after {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  content: "";
+  opacity: 0.16;
+  background:
+    linear-gradient(rgba(214, 237, 104, 0.08), rgba(11, 18, 19, 0.16)),
+    url("../../assets/runtime/spritesheets/backround/asset_pierre.png") center /
+      cover;
+  mix-blend-mode: screen;
+}
+
+a {
+  color: inherit;
+}
+
+.home-shell {
+  width: min(1380px, 100%);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 28px 42px 22px;
+}
+
+.home-nav,
+.home-footer,
+.home-brand,
+.signal-state,
+.home-tools,
+.hero-actions,
+.briefing-meta {
+  display: flex;
+  align-items: center;
+}
+
+.home-nav,
+.home-footer {
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.home-nav {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 18px;
+}
+
+.home-tools {
+  gap: 8px;
+}
+
+.tool-button,
+.panel-close {
+  border: 1px solid var(--line);
+  color: var(--muted);
+  background: rgba(17, 28, 27, 0.78);
+  cursor: pointer;
+  font:
+    700 8px "Space Mono",
+    monospace;
+  letter-spacing: 0.08em;
+}
+
+.tool-button {
+  padding: 9px 10px;
+}
+
+.tool-button:hover,
+.tool-button:focus-visible,
+.tool-button.active {
+  border-color: var(--acid);
+  color: var(--acid);
+}
+
+.home-brand {
+  gap: 12px;
+  color: var(--paper);
+  font:
+    700 16px "Barlow Condensed",
+    sans-serif;
+  letter-spacing: 0.13em;
+  text-decoration: none;
+}
+
+.brand-mark {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.brand-mark i,
+.signal-state i {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--acid);
+  box-shadow: 0 0 16px var(--acid);
+}
+
+.brand-divider {
+  color: var(--rust);
+}
+
+.signal-state {
+  gap: 9px;
+  color: var(--acid);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 0.8fr;
+  min-height: 570px;
+  padding: 92px 0 70px;
+}
+
+.hero-copy {
+  align-self: center;
+  max-width: 650px;
+}
+
+.eyebrow {
+  margin: 0 0 20px;
+  color: var(--amber);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}
+
+h1,
+h2 {
+  margin: 0;
+  font-family: "Barlow Condensed", sans-serif;
+  text-transform: uppercase;
+}
+
+h1 {
+  max-width: 680px;
+  font-size: clamp(76px, 12vw, 166px);
+  line-height: 0.78;
+  letter-spacing: -0.02em;
+}
+
+h1 em {
+  color: var(--acid);
+  font-style: normal;
+}
+
+.hero-intro {
+  max-width: 440px;
+  margin: 34px 0 35px;
+  color: #c0c8b8;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.hero-actions {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.launch-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 260px;
+  padding: 16px 18px;
+  color: #111817;
+  background: var(--acid);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  transition:
+    transform 180ms ease,
+    background 180ms ease;
+}
+
+.launch-button b {
+  margin-left: 34px;
+  font-size: 21px;
+  line-height: 0.7;
+}
+
+.launch-button:hover,
+.launch-button:focus-visible {
+  background: #efffa8;
+  transform: translateX(6px);
+}
+
+.launch-button:focus-visible {
+  outline: 3px solid var(--amber);
+  outline-offset: 5px;
+}
+
+.launch-note {
+  color: var(--muted);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+}
+
+.hero-scan {
+  position: relative;
+  align-self: center;
+  justify-self: end;
+  width: min(360px, 80%);
+  aspect-ratio: 1;
+  border: 1px solid rgba(214, 237, 104, 0.28);
+  background: radial-gradient(
+    circle,
+    rgba(214, 237, 104, 0.11),
+    transparent 55%
+  );
+  box-shadow: inset 0 0 90px rgba(214, 237, 104, 0.05);
+}
+
+.hero-scan::before,
+.hero-scan::after {
+  position: absolute;
+  content: "";
+  border: 1px solid rgba(214, 237, 104, 0.22);
+  border-radius: 50%;
+}
+
+.hero-scan::before {
+  inset: 16%;
+}
+
+.hero-scan::after {
+  inset: 34%;
+}
+
+.scan-label,
+.scan-coordinates {
+  position: absolute;
+  color: var(--acid);
+  font-size: 8px;
+  letter-spacing: 0.12em;
+}
+
+.scan-label {
+  top: 16px;
+  left: 16px;
+}
+
+.scan-coordinates {
+  right: 16px;
+  bottom: 16px;
+  color: var(--amber);
+  text-align: right;
+  line-height: 1.6;
+}
+
+.scan-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--acid), transparent);
+  box-shadow: 0 0 14px var(--acid);
+}
+
+.briefing {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 70px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 34px 0;
+}
+
+.briefing h2 {
+  font-size: clamp(40px, 5vw, 68px);
+  line-height: 0.85;
+}
+
+.briefing h2 strong {
+  color: var(--rust);
+  font-weight: 800;
+}
+
+.briefing-copy {
+  max-width: 630px;
+}
+
+.briefing-copy p {
+  margin: 0 0 28px;
+  color: #b8c2b4;
+  font-size: 11px;
+  line-height: 1.8;
+}
+
+.briefing-meta {
+  flex-wrap: wrap;
+  gap: 12px 28px;
+  color: var(--muted);
+  font-size: 8px;
+  letter-spacing: 0.08em;
+}
+
+.briefing-meta b {
+  margin-right: 6px;
+  color: var(--acid);
+  font-size: 14px;
+}
+
+.utility-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 5;
+  width: min(520px, calc(100% - 36px));
+  padding: 38px;
+  border: 1px solid rgba(214, 237, 104, 0.5);
+  background: rgba(12, 21, 20, 0.97);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+  transform: translate(-50%, -50%);
+}
+
+.utility-panel::before {
+  position: fixed;
+  inset: 50% 50%;
+  z-index: -1;
+  width: 100vw;
+  height: 100vh;
+  content: "";
+  background: rgba(5, 10, 10, 0.7);
+  transform: translate(-50%, -50%);
+}
+
+.utility-panel[hidden] {
+  display: none;
+}
+
+.utility-panel h2 {
+  max-width: 360px;
+  margin-bottom: 20px;
+  color: var(--acid);
+  font-size: clamp(42px, 7vw, 70px);
+  line-height: 0.85;
+}
+
+.utility-panel > p:last-child {
+  max-width: 420px;
+  margin: 0;
+  color: #c0c8b8;
+  font-size: 11px;
+  line-height: 1.8;
+}
+
+.panel-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 30px;
+  height: 30px;
+  color: var(--rust);
+  font-size: 20px;
+}
+
+.panel-controls {
+  display: grid;
+  gap: 1px;
+  background: var(--line);
+}
+
+.panel-controls span {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px;
+  background: var(--panel);
+}
+
+.panel-controls b {
+  color: var(--acid);
+}
+
+.panel-controls em {
+  color: var(--muted);
+  font-size: 9px;
+  font-style: normal;
+}
+
+.home-footer {
+  padding-top: 17px;
+  color: var(--muted);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+}
+
+@media (max-width: 760px) {
+  .home-shell {
+    padding: 18px 18px 16px;
+  }
+
+  .home-brand {
+    font-size: 13px;
+  }
+
+  .signal-state {
+    font-size: 7px;
+  }
+
+  .home-tools {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .home-tools .signal-state {
+    display: none;
+  }
+
+  .hero {
+    display: block;
+    min-height: auto;
+    padding: 80px 0 65px;
+  }
+
+  h1 {
+    font-size: clamp(70px, 22vw, 118px);
+  }
+
+  .hero-intro {
+    font-size: 11px;
+  }
+
+  .hero-scan {
+    width: min(280px, 76vw);
+    margin: 62px auto 0;
+  }
+
+  .briefing {
+    display: block;
+  }
+
+  .briefing-copy {
+    margin-top: 26px;
+  }
+
+  .home-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+}

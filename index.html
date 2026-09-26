@@ -6,100 +6,215 @@
       name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
-    <meta name="theme-color" content="#101928" />
-    <title>Skybound Run</title>
-    <link rel="stylesheet" href="src/styles/main.css" />
+    <meta name="theme-color" content="#101816" />
+    <title>Afterlight // Zero Day</title>
+    <link rel="stylesheet" href="src/styles/home.css" />
   </head>
   <body>
-    <main class="game-shell">
-      <header class="topbar">
-        <div class="brand-mark">
-          <span class="brand-dot"></span><span>SKYBOUND RUN</span>
-        </div>
-        <div class="topbar-note">SECTOR 01 / THE GREEN FRONTIER</div>
-      </header>
-      <section class="game-frame" aria-label="Jeu de plateforme Skybound Run">
-        <canvas id="game" width="1280" height="720"></canvas>
-        <div id="start-screen" class="start-menu">
-          <div class="menu-heading">
-            <p class="eyebrow">SKYBOUND RUN // PROTOCOLE DE SURVIE</p>
-            <h1>Le dernier<br /><em>passage</em></h1>
-            <p class="intro">
-              Une course. Une frontière. Aucun retour en arrière.
-            </p>
-          </div>
-          <div class="menu-grid">
-            <section class="mission-card" aria-labelledby="mission-title">
-              <p class="card-label">MISSION ACTIVE</p>
-              <h2 id="mission-title">Traverser le secteur 01</h2>
-              <p>
-                Atteins le drapeau vert, récupère les ressources et garde tes
-                trois points de vitalité.
-              </p>
-            </section>
-            <section class="controls-card" aria-labelledby="controls-title">
-              <p class="card-label" id="controls-title">COMMANDES</p>
-              <div class="control-row"><span>COURIR</span><b>A / D</b></div>
-              <div class="control-row"><span>SAUTER</span><b>ESPACE</b></div>
-              <div class="control-row"><span>TACTILE</span><b>ÉCRAN</b></div>
-            </section>
-          </div>
-          <button id="start-button" class="primary-button">
-            LANCER LA MISSION <span>→</span>
+    <main class="home-shell">
+      <nav class="home-nav" aria-label="Navigation principale">
+        <a class="home-brand" href="index.html" aria-label="Afterlight accueil">
+          <span class="brand-mark"><i></i> AFTERLIGHT</span>
+          <span class="brand-divider">//</span>
+          <span>ZERO DAY</span>
+        </a>
+        <div class="home-tools">
+          <button
+            class="tool-button active"
+            data-action="language"
+            type="button"
+          >
+            FR / EN
           </button>
-          <p class="menu-status"><span></span>SYSTÈME PRÊT / SECTEUR 01</p>
-        </div>
-        <div id="end-screen" class="screen-panel hidden">
-          <p id="end-kicker" class="eyebrow">MISSION ACCOMPLIE</p>
-          <h2 id="end-title">Bravo, coureur.</h2>
-          <p id="end-copy">La frontière est franchie.</p>
-          <button id="restart-button" class="primary-button">
-            REJOUER <span>↻</span>
+          <button
+            class="tool-button"
+            data-panel="info-panel"
+            type="button"
+            data-fr="INFO"
+            data-en="INFO"
+          >
+            INFO
           </button>
+          <button
+            class="tool-button"
+            data-panel="controls-panel"
+            type="button"
+            data-fr="CONTRÔLES"
+            data-en="CONTROLS"
+          >
+            CONTRÔLES
+          </button>
+          <span class="signal-state"
+            ><i></i
+            ><span data-fr="SIGNAL ACTIF" data-en="SIGNAL ACTIVE"
+              >SIGNAL ACTIF</span
+            ></span
+          >
         </div>
-        <div class="hud" aria-live="polite">
-          <div class="hud-group">
-            <span class="hud-label">VITAL</span>
-            <span id="hearts" class="hearts">♥ ♥ ♥</span>
+      </nav>
+
+      <section class="hero" aria-labelledby="home-title">
+        <div class="hero-copy">
+          <p
+            class="eyebrow"
+            data-fr="ARCHIVE 07 / APRÈS L'EFFONDREMENT"
+            data-en="ARCHIVE 07 / AFTER THE FALL"
+          >
+            ARCHIVE 07 / APRÈS L'EFFONDREMENT
+          </p>
+          <h1 id="home-title">
+            <span data-fr="Le monde" data-en="The world">Le monde</span
+            ><br /><em data-fr="n'est plus sûr." data-en="is no longer safe."
+              >n'est plus sûr.</em
+            >
+          </h1>
+          <p class="hero-intro">
+            <span
+              data-fr="Les villes sont vides, mais les relais parlent encore. Entre dans le périmètre mort et rallume le dernier signal."
+              data-en="The cities are empty, but the relays still speak. Enter the dead perimeter and light the last signal."
+              >Les villes sont vides, mais les relais parlent encore. Entre dans
+              le périmètre mort et rallume le dernier signal.</span
+            >
+          </p>
+          <div class="hero-actions">
+            <a class="launch-button" href="game.html">
+              <span data-fr="LANCER LA MISSION" data-en="START MISSION"
+                >LANCER LA MISSION</span
+              ><b>→</b>
+            </a>
+            <span
+              class="launch-note"
+              data-fr="SECTEUR 01 / MODE SOLO"
+              data-en="SECTOR 01 / SOLO MODE"
+              >SECTEUR 01 / MODE SOLO</span
+            >
           </div>
-          <div class="hud-group score-group">
-            <span class="hud-label">SCORE</span>
-            <strong id="score">000000</strong>
-          </div>
-          <div class="hud-group progress-group">
-            <span class="hud-label">PROGRESSION</span>
-            <div class="progress-track"><span id="progress"></span></div>
+        </div>
+        <div class="hero-scan" aria-hidden="true">
+          <span class="scan-label">LIVE FEED</span>
+          <span class="scan-line"></span>
+          <span class="scan-coordinates">48°51' N<br />2°21' E</span>
+        </div>
+      </section>
+
+      <section class="briefing" aria-label="Briefing de mission">
+        <div class="briefing-lead">
+          <p class="eyebrow">BRIEFING / RELAY 01</p>
+          <h2>
+            <span data-fr="Une dernière" data-en="One last">Une dernière</span
+            ><br /><strong data-fr="transmission." data-en="transmission."
+              >transmission.</strong
+            >
+          </h2>
+        </div>
+        <div class="briefing-copy">
+          <p>
+            <span
+              data-fr="Les fragments d'énergie sont la seule monnaie qui reste. Traverse les ruines, évite les zones instables et garde tes trois unités de vitalité jusqu'au relais."
+              data-en="Energy fragments are the only currency left. Cross the ruins, avoid unstable zones and keep all three vitality units until the relay."
+              >Les fragments d'énergie sont la seule monnaie qui reste. Traverse
+              les ruines, évite les zones instables et garde tes trois unités de
+              vitalité jusqu'au relais.</span
+            >
+          </p>
+          <div class="briefing-meta">
+            <span
+              ><b>01</b>
+              <span data-fr="SECTEUR À TRAVERSER" data-en="SECTOR TO CROSS"
+                >SECTEUR À TRAVERSER</span
+              ></span
+            >
+            <span
+              ><b>03</b>
+              <span data-fr="UNITÉS DE VITALITÉ" data-en="VITALITY UNITS"
+                >UNITÉS DE VITALITÉ</span
+              ></span
+            >
+            <span
+              ><b>∞</b>
+              <span data-fr="RETOUR IMPOSSIBLE" data-en="NO RETURN"
+                >RETOUR IMPOSSIBLE</span
+              ></span
+            >
           </div>
         </div>
       </section>
-      <nav class="mobile-controls" aria-label="Contrôles tactiles">
+
+      <section
+        id="info-panel"
+        class="utility-panel"
+        hidden
+        aria-labelledby="info-title"
+      >
         <button
-          class="control-button"
-          data-control="left"
-          aria-label="Aller à gauche"
+          class="panel-close"
+          type="button"
+          data-close="info-panel"
+          aria-label="Fermer"
         >
-          ←
+          ×
         </button>
+        <p class="eyebrow">ARCHIVE / 07</p>
+        <h2
+          id="info-title"
+          data-fr="Le signal n'est pas mort."
+          data-en="The signal is not dead."
+        >
+          Le signal n'est pas mort.
+        </h2>
+        <p
+          data-fr="Afterlight est une course de survie dans une ville futuriste abandonnée. Récupère les fragments, franchis les ruines et rallume le relais 01."
+          data-en="Afterlight is a survival run through an abandoned futuristic city. Collect fragments, cross the ruins and restart relay 01."
+        >
+          Afterlight est une course de survie dans une ville futuriste
+          abandonnée. Récupère les fragments, franchis les ruines et rallume le
+          relais 01.
+        </p>
+      </section>
+
+      <section
+        id="controls-panel"
+        class="utility-panel"
+        hidden
+        aria-labelledby="controls-title"
+      >
         <button
-          class="control-button jump-control"
-          data-control="jump"
-          aria-label="Sauter"
+          class="panel-close"
+          type="button"
+          data-close="controls-panel"
+          aria-label="Fermer"
         >
-          ↑
+          ×
         </button>
-        <button
-          class="control-button"
-          data-control="right"
-          aria-label="Aller à droite"
+        <p class="eyebrow">FIELD MANUAL</p>
+        <h2
+          id="controls-title"
+          data-fr="Rester en mouvement."
+          data-en="Keep moving."
         >
-          →
-        </button>
-      </nav>
-      <footer class="footer-line">
-        <span>COLLECT / CLIMB / ESCAPE</span
-        ><span>BEST RUN: <b id="best-score">000000</b></span>
+          Rester en mouvement.
+        </h2>
+        <div class="panel-controls">
+          <span
+            ><b>A / D</b
+            ><em data-fr="DÉPLACER" data-en="MOVE">DÉPLACER</em></span
+          >
+          <span
+            ><b>ESPACE</b><em data-fr="SAUTER" data-en="JUMP">SAUTER</em></span
+          >
+          <span
+            ><b>ÉCRAN</b
+            ><em data-fr="TACTILE" data-en="TOUCH">TACTILE</em></span
+          >
+        </div>
+      </section>
+
+      <footer class="home-footer">
+        <span>AFTERLIGHT // BUILD 01.04</span>
+        <span>SCAVENGE / RUN / SURVIVE</span>
+        <span>© RELAY NETWORK</span>
       </footer>
     </main>
-    <script src="src/game.js"></script>
+    <script src="src/home.js"></script>
   </body>
 </html>

@@ -266,14 +266,16 @@ function startGame() {
   if (running) return;
   resetGame();
   running = true;
-  startScreen.classList.add("hidden");
-  endScreen.classList.add("hidden");
+  startScreen?.classList.add("hidden");
+  endScreen?.classList.add("hidden");
   lastTime = performance.now();
   requestAnimationFrame(loop);
 }
 
-document.getElementById("start-button").addEventListener("click", startGame);
-document.getElementById("restart-button").addEventListener("click", startGame);
+document.getElementById("start-button")?.addEventListener("click", startGame);
+document.getElementById("restart-button")?.addEventListener("click", startGame);
+
+if (!startScreen) startGame();
 
 window.addEventListener("keydown", (event) => {
   if (

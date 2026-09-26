@@ -5,8 +5,9 @@
   --muted: #aab5b1;
   --night: #0b1320;
   --night-soft: #121e2d;
-  --lime: #d4f36a;
-  --coral: #ff806b;
+  --lime: #d6ed68;
+  --coral: #f07b5e;
+  --amber: #e7b45d;
   --line: rgba(247, 241, 223, 0.17);
 }
 
@@ -20,7 +21,15 @@ body {
 body {
   margin: 0;
   color: var(--ink);
-  background: #09111c;
+  background:
+    linear-gradient(rgba(11, 19, 32, 0.93), rgba(11, 19, 32, 0.93)),
+    repeating-linear-gradient(
+      135deg,
+      #0d1a28 0,
+      #0d1a28 1px,
+      #09111c 1px,
+      #09111c 11px
+    );
   font-family: "Space Mono", monospace;
 }
 
@@ -46,7 +55,7 @@ body {
   font:
     700 17px "Barlow Condensed",
     sans-serif;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.13em;
 }
 .brand-dot {
   width: 9px;
@@ -68,6 +77,19 @@ body {
   background: #172638;
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
 }
+.game-frame::after {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  content: "";
+  background: linear-gradient(
+    90deg,
+    rgba(9, 17, 28, 0.24),
+    transparent 48%,
+    rgba(214, 237, 104, 0.08)
+  );
+}
 canvas {
   display: block;
   width: 100%;
@@ -79,10 +101,11 @@ canvas {
   position: absolute;
   left: 8.5%;
   top: 10%;
+  z-index: 2;
   width: min(720px, 78%);
-  padding: 34px 40px 30px;
-  background: rgba(9, 17, 28, 0.9);
-  border: 1px solid rgba(212, 243, 106, 0.35);
+  padding: 30px 40px 32px;
+  background: rgba(9, 17, 28, 0.91);
+  border: 1px solid rgba(214, 237, 104, 0.35);
   border-left: 4px solid var(--lime);
   backdrop-filter: blur(8px);
 }
@@ -91,6 +114,34 @@ canvas {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  animation: menu-enter 0.55s ease-out both;
+}
+.menu-topline,
+.launch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+.menu-topline .eyebrow {
+  margin-bottom: 0;
+}
+.build-tag {
+  padding: 5px 8px;
+  border: 1px solid rgba(247, 241, 223, 0.24);
+  color: var(--amber);
+  font-size: 8px;
+  letter-spacing: 0.12em;
+}
+@keyframes menu-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .hidden {
   display: none !important;
@@ -99,7 +150,7 @@ canvas {
   margin: 0 0 15px;
   color: var(--lime);
   font-size: 11px;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.16em;
   font-weight: 700;
 }
 h1,
@@ -112,7 +163,7 @@ h2 {
   text-transform: uppercase;
 }
 h1 em {
-  color: var(--coral);
+  color: var(--amber);
   font-style: normal;
 }
 h2 {
@@ -131,17 +182,17 @@ h2 {
   display: grid;
   grid-template-columns: 1.25fr 0.75fr;
   gap: 1px;
-  margin: 30px 0 25px;
+  margin: 28px 0 25px;
   background: rgba(247, 241, 223, 0.16);
 }
 .mission-card,
 .controls-card {
   padding: 18px 20px;
-  background: rgba(18, 30, 45, 0.9);
+  background: rgba(20, 30, 40, 0.92);
 }
 .card-label {
   margin: 0 0 12px;
-  color: var(--lime);
+  color: var(--amber);
   font-size: 9px;
   letter-spacing: 0.16em;
 }
@@ -189,6 +240,10 @@ h2 {
   background: #efffa8;
   transform: translateX(4px);
 }
+.primary-button:focus-visible {
+  outline: 3px solid var(--amber);
+  outline-offset: 4px;
+}
 .primary-button span {
   margin-left: 22px;
   font-size: 20px;
@@ -200,17 +255,31 @@ h2 {
   font-size: 9px;
   line-height: 1.6;
 }
-.menu-status {
-  margin: 15px 0 0;
+.launch-status {
+  display: flex;
+  align-items: center;
+  gap: 9px;
   color: #8f9d9a;
-  font-size: 9px;
+  font-size: 8px;
   letter-spacing: 0.08em;
 }
-.menu-status span {
+.launch-status strong,
+.launch-status small {
+  display: block;
+}
+.launch-status strong {
+  color: var(--ink);
+  font-size: 8px;
+}
+.launch-status small {
+  margin-top: 4px;
+  font-size: 7px;
+}
+.status-light {
   display: inline-block;
   width: 6px;
   height: 6px;
-  margin-right: 8px;
+  flex: 0 0 auto;
   background: var(--lime);
   box-shadow: 0 0 10px var(--lime);
 }
@@ -290,6 +359,16 @@ h2 {
     min-height: 84%;
     padding: 23px 22px;
   }
+  .menu-topline {
+    align-items: flex-start;
+  }
+  .menu-topline .eyebrow {
+    max-width: 190px;
+    line-height: 1.5;
+  }
+  .build-tag {
+    font-size: 7px;
+  }
   .intro {
     margin: 18px 0 20px;
     font-size: 10px;
@@ -307,6 +386,14 @@ h2 {
   }
   .mission-card h2 {
     font-size: 20px;
+  }
+  .launch-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .launch-status {
+    padding-left: 3px;
   }
   .hud {
     top: 12px;

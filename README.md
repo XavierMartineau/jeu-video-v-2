@@ -29,6 +29,7 @@ Les ressources utilisées ou prévues pour le projet proviennent des sources sui
 
 ### Decors et tilesets
 
+- [Free Post-Apocalyptic Pixel Art Backgrounds - Free Game Assets](https://free-game-assets.itch.io/free-post-apocalyptic-pixel-art-backgrounds)
 - [Execution Grounds 2D Platformer Tileset - CraftPix](https://craftpix.net/freebies/free-execution-grounds-2d-platformer-tileset/)
 - [Medieval Armory Street Cartoon 2D Tileset - CraftPix](https://craftpix.net/freebies/free-medieval-armory-street-cartoon-2d-tileset/)
 - [Plague Town 2D Platformer Vector Tileset - CraftPix](https://craftpix.net/freebies/free-plague-town-2d-platformer-vector-tileset/)
@@ -53,6 +54,7 @@ assets/
 │   └── spritesheets/    # feuilles de sprites
 └── pack/                # packs sources et leurs licences
 	├── icons/           # icônes, objets et équipements
+	├── backgrounds/     # arrière-plans et paysages
 	├── tilesets/        # décors et environnements
 	├── world/           # personnages, ennemis, objets et tuiles
 	└── audio/           # packs musicaux et effets sonores
