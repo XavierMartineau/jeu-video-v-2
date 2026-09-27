@@ -7,79 +7,65 @@
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
     <meta name="theme-color" content="#0a1114" />
-    <title>Afterlight // Dead City</title>
+    <title>Afterlight // Neon Wasteland</title>
     <link rel="stylesheet" href="src/styles/main.css" />
   </head>
   <body>
     <main class="ops-shell">
       <header class="ops-header">
         <a class="ops-brand" href="index.html"
-          ><i></i> AFTERLIGHT <b>//</b> DEAD CITY</a
+          ><i></i> AFTERLIGHT <b>//</b> NEON WASTELAND</a
         >
         <div class="ops-signal">
-          <span></span> RELAY 01
-          <strong id="mission-state">INFILTRATION</strong>
+          <span></span> LIVE RUN
+          <strong id="mission-state">LOCKDOWN</strong>
         </div>
       </header>
-      <section class="game-stage" aria-label="Mission furtive Afterlight">
+      <section
+        class="game-stage"
+        aria-label="Niveau post-apocalyptique Dustline"
+      >
         <canvas id="game" width="1280" height="720"></canvas>
-        <div class="mission-hud">
-          <div class="hud-card objective-card">
-            <small>RUN PROTOCOL</small>
-            <strong id="objective">Traverser les 4 secteurs</strong>
-            <span id="objective-detail"
-              >0 / 4 balises • rejoindre le train d'évacuation</span
-            >
+        <div class="game-hud">
+          <div class="hud-block objective">
+            <small>DIRECTIVE</small
+            ><strong id="objective">Trouver le premier code d’accès</strong
+            ><span id="objective-detail">Terminal 01 • 0 / 3 fragments</span>
           </div>
-          <div class="hud-card vitals-card">
-            <div class="hud-title">
-              <span>VITALITÉ</span><b id="health-value">100</b>
-            </div>
-            <div class="meter"><i id="health-meter"></i></div>
-            <div class="hud-title">
-              <span>ENDURANCE</span><b id="stamina-value">100</b>
-            </div>
-            <div class="meter stamina"><i id="stamina-meter"></i></div>
+          <div class="hud-block stats">
+            <span>INTEGRITY <b id="health">100</b></span
+            ><i><em id="health-bar"></em></i
+            ><span>ALERT <b id="alert-level">0%</b></span
+            ><i class="alert-meter"><em id="alert-bar"></em></i>
           </div>
-          <div class="hud-card inventory-card">
-            <small>SAC DE TERRAIN</small>
-            <div class="inventory-items">
-              <span id="scrap-count">CELLS 00</span
-              ><span id="medkit-count">MED 01</span
-              ><span id="ammo-count">AMMO 12</span>
-            </div>
+          <div class="hud-block inventory">
+            <small>RIG // 03</small
+            ><span id="code-fragments">CODE FRAGMENTS 0</span
+            ><span id="access-state">DOORS LOCKED</span>
           </div>
         </div>
-        <div id="alert-banner" class="alert-banner hidden">
-          PATROUILLE ACTIVE // RESTE DANS L’OMBRE
+        <div id="world-prompt" class="world-prompt hidden">[ E ] INTERAGIR</div>
+        <div id="code-panel" class="code-panel hidden">
+          <p class="eyebrow">SECURITY NODE</p>
+          <h1 id="code-title">ACCESS REQUIRED</h1>
+          <p id="code-hint">Le code est caché dans les terminaux du secteur.</p>
+          <div class="code-readout" id="code-readout">_ _ _</div>
+          <input
+            id="code-input"
+            inputmode="numeric"
+            maxlength="3"
+            aria-label="Code d'accès"
+            autocomplete="off"
+          />
+          <button id="code-submit" class="neon-button">VALIDER <b>→</b></button>
+          <button id="code-close" class="quiet-button">ANNULER</button>
         </div>
-        <div id="interact-prompt" class="interact-prompt hidden">
-          [ E ] ACTIVER
-        </div>
-        <div id="pause-panel" class="pause-panel hidden">
-          <p class="eyebrow">RUN PAUSED</p>
-          <h1>Le désert<br /><em>attend.</em></h1>
-          <p>Le convoi continue d’avancer. Reprends la traversée.</p>
-          <button id="resume-button" class="ops-button">
-            REPRENDRE <b>→</b>
-          </button>
-          <a href="index.html" class="back-link">QUITTER LA DUSTLINE</a>
-        </div>
-        <div id="result-panel" class="result-panel hidden">
-          <p id="result-kicker" class="eyebrow">RUN COMPLETE</p>
-          <h1 id="result-title">Le train part.</h1>
-          <p id="result-copy">
-            Tu as traversé la Dustline. Le convoi quitte le secteur avant
-            l’aube.
-          </p>
-          <button id="retry-button" class="ops-button">REJOUER <b>↻</b></button>
-          <a href="index.html" class="back-link">RETOUR À L’ACCUEIL</a>
-        </div>
+        <div id="message-card" class="message-card hidden"></div>
       </section>
       <footer class="ops-footer">
-        <span>A / D AVANCER</span><span>W / ESPACE SAUTER</span
-        ><span>CTRL SE BAISSER</span><span>E ACTIVER</span
-        ><span>CLIC / F TIRER</span><span>ESC PAUSE</span>
+        <span>A / D SE DÉPLACER</span><span>W / ESPACE SAUTER</span
+        ><span>E HACKER / ENTRER</span><span>F TIRER</span
+        ><span>3 SECTEURS / 3 PORTES</span>
       </footer>
     </main>
     <script src="src/game.js"></script>

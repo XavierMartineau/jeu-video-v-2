@@ -1,14 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Space+Mono:wght@400;700&display=swap");
-
 :root {
-  --ink: #e8ead9;
-  --muted: #91a097;
-  --night: #080f12;
-  --panel: rgba(8, 16, 18, 0.9);
-  --acid: #d6ed68;
-  --amber: #e7b45d;
-  --rust: #ef765c;
-  --line: rgba(232, 234, 217, 0.18);
+  --ink: #e9eddc;
+  --muted: #879894;
+  --bg: #070d11;
+  --panel: rgba(5, 12, 17, 0.88);
+  --cyan: #61e6d4;
+  --pink: #ff5c91;
+  --yellow: #e6ed6b;
+  --line: rgba(233, 237, 220, 0.2);
 }
 * {
   box-sizing: border-box;
@@ -19,13 +18,13 @@ body {
 }
 body {
   margin: 0;
+  background: var(--bg);
   color: var(--ink);
-  background: var(--night);
   font-family: "Space Mono", monospace;
 }
 .ops-shell {
   width: min(1500px, 100%);
-  margin: 0 auto;
+  margin: auto;
   padding: 20px 26px 16px;
 }
 .ops-header,
@@ -53,12 +52,12 @@ body {
   width: 8px;
   height: 8px;
   margin-right: 8px;
-  background: var(--acid);
-  box-shadow: 0 0 14px var(--acid);
+  background: var(--cyan);
+  box-shadow: 0 0 14px var(--cyan);
 }
 .ops-brand b {
   margin: 0 8px;
-  color: var(--rust);
+  color: var(--pink);
 }
 .ops-signal {
   color: var(--muted);
@@ -67,7 +66,7 @@ body {
 }
 .ops-signal strong {
   margin-left: 15px;
-  color: var(--acid);
+  color: var(--pink);
   font-size: 8px;
 }
 .game-stage {
@@ -75,8 +74,8 @@ body {
   overflow: hidden;
   margin-top: 16px;
   border: 1px solid var(--line);
-  background: #152222;
-  box-shadow: 0 24px 90px rgba(0, 0, 0, 0.4);
+  background: #0d1b20;
+  box-shadow: 0 24px 90px #0008;
 }
 canvas {
   display: block;
@@ -84,176 +83,191 @@ canvas {
   height: auto;
   image-rendering: pixelated;
 }
-.mission-hud {
+.game-hud {
   position: absolute;
   inset: 18px 20px auto;
-  z-index: 2;
+  z-index: 3;
   display: grid;
-  grid-template-columns: minmax(240px, 1fr) 220px auto;
-  gap: 12px;
+  grid-template-columns: minmax(280px, 1fr) 190px auto;
+  gap: 10px;
   pointer-events: none;
 }
-.hud-card {
+.hud-block {
   padding: 12px 14px;
-  border: 1px solid rgba(232, 234, 217, 0.2);
+  border: 1px solid #61e6d455;
   background: var(--panel);
   backdrop-filter: blur(5px);
 }
-.hud-card small {
+.hud-block small {
   display: block;
   margin-bottom: 7px;
-  color: var(--amber);
+  color: var(--cyan);
   font-size: 8px;
   letter-spacing: 0.15em;
 }
-.objective-card strong {
+.objective strong {
   display: block;
-  color: var(--ink);
   font-size: 12px;
 }
-.objective-card > span {
+.objective span {
   display: block;
-  margin-top: 7px;
+  margin-top: 6px;
   color: var(--muted);
   font-size: 8px;
 }
-.hud-title {
+.stats {
+  display: grid;
+  gap: 5px;
+  color: var(--muted);
+  font-size: 8px;
+}
+.stats span {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 5px;
-  color: var(--muted);
-  font-size: 8px;
-  letter-spacing: 0.1em;
 }
-.hud-title b {
+.stats b {
   color: var(--ink);
 }
-.meter {
-  height: 4px;
-  margin-bottom: 12px;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.16);
+.stats i {
+  height: 3px;
+  background: #fff2;
 }
-.meter i {
+.stats em {
   display: block;
   width: 100%;
   height: 100%;
-  background: var(--rust);
-  transition: width 0.2s;
+  background: var(--cyan);
 }
-.meter.stamina i {
-  background: var(--acid);
+.stats .alert-meter em {
+  background: var(--pink);
 }
-.inventory-card {
-  min-width: 205px;
-}
-.inventory-items {
-  display: flex;
-  gap: 12px;
-  color: var(--ink);
+.inventory {
+  min-width: 190px;
+  color: var(--muted);
   font-size: 8px;
 }
-.alert-banner {
+.inventory span {
+  display: block;
+  margin-top: 7px;
+  color: var(--ink);
+}
+.world-prompt,
+.message-card {
   position: absolute;
-  top: 116px;
   left: 50%;
-  z-index: 3;
-  padding: 9px 18px;
-  border: 1px solid var(--rust);
-  color: var(--rust);
-  background: rgba(35, 12, 12, 0.88);
+  z-index: 4;
+  padding: 11px 16px;
+  border: 1px solid var(--yellow);
+  background: #071013ee;
+  color: var(--yellow);
   font-size: 9px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   transform: translateX(-50%);
-  animation: blink 1s steps(2) infinite;
+}
+.world-prompt {
+  bottom: 25px;
+}
+.message-card {
+  top: 120px;
+  border-color: var(--pink);
+  color: var(--pink);
+  animation: message-in 0.2s ease-out;
+}
+@keyframes message-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -8px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
 }
 .hidden {
   display: none !important;
 }
-@keyframes blink {
-  50% {
-    opacity: 0.55;
-  }
-}
-.interact-prompt {
-  position: absolute;
-  bottom: 25px;
-  left: 50%;
-  z-index: 3;
-  padding: 10px 16px;
-  color: var(--acid);
-  border: 1px solid var(--acid);
-  background: rgba(8, 16, 18, 0.9);
-  font-size: 10px;
-  transform: translateX(-50%);
-}
-.pause-panel,
-.result-panel {
+.code-panel {
   position: absolute;
   top: 50%;
   left: 50%;
-  z-index: 5;
-  width: min(440px, 80%);
-  padding: 38px;
-  border: 1px solid rgba(214, 237, 104, 0.45);
-  background: rgba(7, 14, 16, 0.96);
-  box-shadow: 0 20px 70px rgba(0, 0, 0, 0.65);
+  z-index: 8;
+  width: min(390px, calc(100% - 32px));
+  padding: 30px;
+  border: 1px solid var(--cyan);
+  background: #061014f5;
+  box-shadow: 0 0 50px #61e6d444;
   transform: translate(-50%, -50%);
 }
 .eyebrow {
-  margin: 0 0 16px;
-  color: var(--amber);
-  font-size: 10px;
-  letter-spacing: 0.18em;
+  margin: 0 0 12px;
+  color: var(--pink);
+  font-size: 9px;
+  letter-spacing: 0.16em;
 }
-.pause-panel h1,
-.result-panel h1 {
+.code-panel h1 {
   margin: 0;
   font:
-    800 clamp(48px, 7vw, 80px)/0.83 "Barlow Condensed",
+    800 45px/0.85 "Barlow Condensed",
     sans-serif;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
-.pause-panel h1 em,
-.result-panel h1 em {
-  color: var(--acid);
-  font-style: normal;
+.code-panel p:not(.eyebrow) {
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.7;
 }
-.pause-panel > p:not(.eyebrow),
-.result-panel > p:not(.eyebrow) {
-  color: #b9c4b5;
-  font-size: 11px;
-  line-height: 1.8;
+.code-readout {
+  margin: 22px 0 14px;
+  color: var(--cyan);
+  font:
+    700 32px "Space Mono",
+    monospace;
+  letter-spacing: 0.35em;
+  text-align: center;
+  text-shadow: 0 0 16px var(--cyan);
 }
-.ops-button {
-  margin-top: 16px;
-  padding: 14px 18px;
-  border: 0;
-  color: #101817;
-  background: var(--acid);
+.code-panel input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #61e6d488;
+  outline: 0;
+  color: var(--cyan);
+  background: #0d2022;
+  text-align: center;
+  font:
+    700 20px "Space Mono",
+    monospace;
+  letter-spacing: 0.3em;
+}
+.neon-button,
+.quiet-button {
   cursor: pointer;
   font:
-    700 11px "Space Mono",
+    700 10px "Space Mono",
     monospace;
   letter-spacing: 0.08em;
 }
-.ops-button b {
-  margin-left: 24px;
-  font-size: 17px;
+.neon-button {
+  margin-top: 14px;
+  padding: 13px 16px;
+  border: 0;
+  background: var(--yellow);
+  color: #101713;
 }
-.ops-button:hover {
-  background: #efffa8;
+.neon-button b {
+  margin-left: 22px;
+  font-size: 16px;
 }
-.back-link {
+.quiet-button {
   display: block;
-  margin-top: 20px;
+  margin-top: 14px;
+  padding: 0;
+  border: 0;
+  background: transparent;
   color: var(--muted);
-  font-size: 8px;
-  letter-spacing: 0.1em;
-  text-decoration: none;
 }
-.back-link:hover {
-  color: var(--ink);
+.neon-button:hover {
+  background: #f4ff9c;
 }
 .ops-footer {
   flex-wrap: wrap;
@@ -270,14 +284,14 @@ canvas {
     align-items: flex-start;
     flex-direction: column;
   }
-  .mission-hud {
+  .game-hud {
     inset: 10px;
     grid-template-columns: 1fr 1fr;
   }
-  .objective-card {
+  .objective {
     grid-column: 1/-1;
   }
-  .inventory-card {
+  .inventory {
     min-width: 0;
   }
   .ops-footer {
@@ -286,27 +300,30 @@ canvas {
   }
 }
 @media (max-width: 500px) {
-  .mission-hud {
+  .game-hud {
     position: relative;
     inset: auto;
     display: grid;
     padding: 8px;
-    background: #0b1516;
+    background: #081315;
   }
   .game-stage {
     display: flex;
     flex-direction: column;
   }
-  canvas {
+  .canvas {
     order: 2;
   }
-  .mission-hud {
+  .game-hud {
     order: 1;
   }
-  .alert-banner {
-    top: 240px;
-    width: 90%;
+  .game-stage canvas {
+    order: 2;
+  }
+  .message-card {
+    top: 260px;
+    width: 88%;
     text-align: center;
-    font-size: 7px;
+    font-size: 8px;
   }
 }

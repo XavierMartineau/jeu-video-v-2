@@ -24,9 +24,9 @@ Puis ouvre http://localhost:8000.
 ## Structure
 
 - `index.html` : page d'accueil
-- `game.html` : mission jouable Dustline Run
+- `game.html` : aperçu du niveau complexe Dustline Blockout
 - `src/home.js` : interactions de langue et panneaux d'information
-- `src/game.js` : logique de la mission, déplacement et furtivité
+- `src/game.js` : rendu du niveau, plateformes et parallax
 - `src/styles/home.css` : styles de la page d'accueil
 - `src/styles/main.css` : styles de la mission
 - `assets/runtime/` : sprites et sons utilisés par la mission
@@ -44,5 +44,6 @@ assets/
     └── world/             # personnages, ennemis et objets
 ```
 
-La page d'accueil et la mission jouable partagent les packs sources conservés
-dans `assets/pack/`.
+La page d'accueil et l'aperçu de niveau partagent les packs sources conservés
+dans `assets/pack/`. Le niveau est volontairement présenté sans joueur,
+ennemi, objet ou système de combat pour travailler d'abord sa structure.

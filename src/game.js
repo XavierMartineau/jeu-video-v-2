@@ -1,188 +1,116 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
-const WIDTH = canvas.width;
-const HEIGHT = canvas.height;
-const world = { width: 7200, height: 900 };
+const W = canvas.width;
+const H = canvas.height;
+const world = { width: 5600, height: 900 };
 const camera = { x: 0, y: 0 };
 const keys = new Set();
-const mouse = { x: 720, y: 340, down: false };
-const state = { running: true, paused: false, alert: 0, score: 0, lastTime: 0 };
+const mouse = { x: 640, y: 360, down: false };
+const state = { alert: 0, score: 0, paused: false, complete: false, last: 0 };
 const images = {};
-const assetPaths = {
-  player: "assets/runtime/sprites/Player_15.png",
-  enemy: "assets/runtime/sprites/Enemie_15.png",
-  coin: "assets/runtime/sprites/coin_gold.png",
-  gem: "assets/runtime/sprites/gem_green.png",
-  ammo: "assets/pack/icons/post-apocalypse-ammunition/PNG/without background/Post-Ammo1.png",
-  sky: "assets/pack/backgrounds/post-apocalyptic/PNG/Postapocalypce3/Bright/sky.png",
-  horizon:
-    "assets/pack/backgrounds/post-apocalyptic/PNG/Postapocalypce3/Bright/sand_back.png",
-  terrain:
-    "assets/pack/backgrounds/post-apocalyptic/PNG/Postapocalypce3/Bright/postapocalypse3.png",
+const paths = {
+  player:
+    "assets/pack/world/post-apocalypse-survivor/Character/Main/Character_side_idle-Sheet6.png",
+  enemy:
+    "assets/pack/world/post-apocalypse-survivor/Enemies/Zombie_Axe/Zombie_Axe_Side-left_Idle-Sheet6.png",
+  factory: "assets/pack/tilesets/factory-cyberpunk/1 Tiles/Tileset.png",
+  backdrop:
+    "assets/pack/tilesets/factory-cyberpunk/2 Background/Background.png",
 };
-Object.entries(assetPaths).forEach(([name, path]) => {
+Object.entries(paths).forEach(([name, path]) => {
   const image = new Image();
   image.src = path;
   images[name] = image;
 });
-const sounds = {
-  step: new Audio("assets/runtime/audio/Walking_sound.mp3"),
-  pickup: new Audio("assets/runtime/audio/powerup.wav"),
-  hit: new Audio("assets/runtime/audio/sharp-punch-soundbible.mp3"),
-  win: new Audio(
-    "assets/runtime/audio/brass-fanfare-with-timpani-and-winchimes-reverberated-146260.mp3",
-  ),
-};
-sounds.step.volume = 0.1;
-sounds.pickup.volume = 0.25;
-sounds.hit.volume = 0.2;
-sounds.win.volume = 0.3;
-
 const player = {
-  x: 160,
-  y: 560,
+  x: 140,
+  y: 540,
   width: 42,
-  height: 62,
-  vx: 0,
+  height: 58,
   vy: 0,
   grounded: false,
-  crouch: false,
   health: 100,
-  stamina: 100,
-  cells: 0,
-  ammo: 12,
-  scrap: 0,
-  fireCooldown: 0,
-  invulnerable: 0,
+  ammo: 8,
   facing: 1,
+  cooldown: 0,
 };
 const platforms = [
-  { x: 0, y: 650, w: 850, h: 250 },
-  { x: 980, y: 650, w: 980, h: 250 },
-  { x: 2110, y: 650, w: 880, h: 250 },
-  { x: 3140, y: 650, w: 1130, h: 250 },
-  { x: 4420, y: 650, w: 930, h: 250 },
-  { x: 5500, y: 650, w: 1700, h: 250 },
-  { x: 270, y: 500, w: 260, h: 28 },
-  { x: 650, y: 390, w: 190, h: 28 },
-  { x: 1110, y: 500, w: 240, h: 28 },
-  { x: 1420, y: 390, w: 230, h: 28 },
-  { x: 1740, y: 285, w: 180, h: 28 },
-  { x: 2230, y: 480, w: 260, h: 28 },
-  { x: 2570, y: 340, w: 240, h: 28 },
-  { x: 3270, y: 490, w: 270, h: 28 },
-  { x: 3650, y: 370, w: 230, h: 28 },
-  { x: 3970, y: 250, w: 230, h: 28 },
-  { x: 4540, y: 470, w: 230, h: 28 },
-  { x: 4880, y: 340, w: 230, h: 28 },
-  { x: 5320, y: 480, w: 260, h: 28 },
-  { x: 5800, y: 370, w: 250, h: 28 },
-  { x: 6230, y: 260, w: 220, h: 28 },
-  { x: 6600, y: 470, w: 250, h: 28 },
+  { x: 0, y: 660, w: 900, h: 240 },
+  { x: 1050, y: 660, w: 1060, h: 240 },
+  { x: 2300, y: 660, w: 1040, h: 240 },
+  { x: 3540, y: 660, w: 800, h: 240 },
+  { x: 4520, y: 660, w: 1080, h: 240 },
+  { x: 210, y: 500, w: 280, h: 24 },
+  { x: 590, y: 400, w: 210, h: 24 },
+  { x: 760, y: 300, w: 180, h: 24 },
+  { x: 1150, y: 510, w: 260, h: 24 },
+  { x: 1500, y: 410, w: 240, h: 24 },
+  { x: 1770, y: 290, w: 230, h: 24 },
+  { x: 2420, y: 500, w: 260, h: 24 },
+  { x: 2750, y: 370, w: 280, h: 24 },
+  { x: 3050, y: 250, w: 210, h: 24 },
+  { x: 3650, y: 490, w: 260, h: 24 },
+  { x: 3990, y: 360, w: 240, h: 24 },
+  { x: 4620, y: 500, w: 250, h: 24 },
+  { x: 4930, y: 370, w: 280, h: 24 },
+  { x: 5250, y: 250, w: 220, h: 24 },
 ];
-const hazards = [
-  { x: 800, y: 620, w: 42 },
-  { x: 1870, y: 620, w: 42 },
-  { x: 2870, y: 620, w: 42 },
-  { x: 4200, y: 620, w: 42 },
-  { x: 5270, y: 620, w: 42 },
-  { x: 6120, y: 620, w: 42 },
+const doors = [
+  {
+    x: 900,
+    y: 520,
+    h: 140,
+    code: "314",
+    open: false,
+    label: "GATE 01 / MAINTENANCE",
+  },
+  {
+    x: 2160,
+    y: 520,
+    h: 140,
+    code: "827",
+    open: false,
+    label: "GATE 02 / FLOODLINE",
+  },
+  {
+    x: 3400,
+    y: 520,
+    h: 140,
+    code: "509",
+    open: false,
+    label: "GATE 03 / CORE ACCESS",
+  },
 ];
-const beacons = [
-  { x: 720, y: 575, activated: false, sector: "01 / RUST YARD" },
-  { x: 1510, y: 325, activated: false, sector: "02 / FLOODLINE" },
-  { x: 2740, y: 275, activated: false, sector: "03 / RELAY FARM" },
-  { x: 4050, y: 185, activated: false, sector: "04 / DUSTLINE" },
+const terminals = [
+  { x: 620, y: 590, fragment: "3", found: false, label: "TERMINAL A // 3" },
+  { x: 1380, y: 590, fragment: "1", found: false, label: "TERMINAL B // 1" },
+  { x: 1860, y: 590, fragment: "4", found: false, label: "TERMINAL C // 4" },
+  { x: 2670, y: 590, fragment: "8", found: false, label: "TERMINAL D // 8" },
+  { x: 3150, y: 590, fragment: "2", found: false, label: "TERMINAL E // 2" },
+  { x: 3850, y: 590, fragment: "7", found: false, label: "TERMINAL F // 7" },
+  { x: 4250, y: 590, fragment: "5", found: false, label: "TERMINAL G // 5" },
+  { x: 4900, y: 590, fragment: "0", found: false, label: "TERMINAL H // 0" },
+  { x: 5200, y: 590, fragment: "9", found: false, label: "TERMINAL I // 9" },
 ];
-const loot = [
-  { x: 430, y: 445, kind: "scrap", taken: false },
-  { x: 1210, y: 445, kind: "ammo", taken: false },
-  { x: 1790, y: 230, kind: "med", taken: false },
-  { x: 2370, y: 425, kind: "scrap", taken: false },
-  { x: 3730, y: 315, kind: "ammo", taken: false },
-  { x: 4710, y: 415, kind: "med", taken: false },
-  { x: 5860, y: 315, kind: "scrap", taken: false },
-];
-const guards = [
-  {
-    x: 560,
-    y: 592,
-    min: 350,
-    max: 790,
-    direction: 1,
-    speed: 0.65,
-    angle: 0,
-    state: "patrol",
-  },
-  {
-    x: 1240,
-    y: 442,
-    min: 1110,
-    max: 1340,
-    direction: -1,
-    speed: 0.7,
-    angle: 3,
-    state: "patrol",
-  },
-  {
-    x: 1600,
-    y: 592,
-    min: 1260,
-    max: 1900,
-    direction: 1,
-    speed: 0.8,
-    angle: 0,
-    state: "patrol",
-  },
-  {
-    x: 2340,
-    y: 422,
-    min: 2230,
-    max: 2470,
-    direction: 1,
-    speed: 0.7,
-    angle: 3,
-    state: "patrol",
-  },
-  {
-    x: 3420,
-    y: 592,
-    min: 3180,
-    max: 3930,
-    direction: -1,
-    speed: 0.85,
-    angle: 3,
-    state: "patrol",
-  },
-  {
-    x: 4690,
-    y: 412,
-    min: 4540,
-    max: 4750,
-    direction: 1,
-    speed: 0.72,
-    angle: 0,
-    state: "patrol",
-  },
-  {
-    x: 6010,
-    y: 592,
-    min: 5700,
-    max: 6500,
-    direction: -1,
-    speed: 0.9,
-    angle: 3,
-    state: "patrol",
-  },
+const drones = [
+  { x: 480, y: 570, min: 300, max: 800, dir: 1, state: "patrol" },
+  { x: 1280, y: 460, min: 1130, max: 1900, dir: -1, state: "patrol" },
+  { x: 2600, y: 570, min: 2360, max: 3250, dir: 1, state: "patrol" },
+  { x: 3820, y: 430, min: 3650, max: 4200, dir: -1, state: "patrol" },
+  { x: 4900, y: 570, min: 4610, max: 5400, dir: 1, state: "patrol" },
 ];
 const bullets = [];
-const train = { x: 6840, y: 510, w: 280, h: 140 };
+const train = { x: 5200, y: 495, w: 350, h: 165 };
 
-function play(sound) {
-  sound.currentTime = 0;
+function ready(image) {
+  return image.complete && image.naturalWidth > 0;
+}
+function play(soundName) {
+  const sound = new Audio(soundName);
+  sound.volume = 0.18;
   sound.play().catch(() => {});
 }
-function rectsOverlap(a, b) {
+function overlap(a, b) {
   return (
     a.x < b.x + b.w &&
     a.x + a.width > b.x &&
@@ -190,133 +118,124 @@ function rectsOverlap(a, b) {
     a.y + a.height > b.y
   );
 }
-function solidAt(rect) {
-  return platforms.some(
-    (platform) =>
-      rect.x < platform.x + platform.w &&
-      rect.x + rect.w > platform.x &&
-      rect.y < platform.y + platform.h &&
-      rect.y + rect.h > platform.y,
+function solid(rect) {
+  return platforms.some((platform) =>
+    overlap(rect, {
+      x: platform.x,
+      y: platform.y,
+      w: platform.w,
+      h: platform.h,
+    }),
   );
 }
-function nearestPlatform() {
-  return platforms
-    .filter(
-      (platform) =>
-        player.x + player.width > platform.x &&
-        player.x < platform.x + platform.w &&
-        player.y + player.height <= platform.y + 40,
-    )
-    .sort((a, b) => a.y - b.y)[0];
-}
-function center(entity) {
-  return {
-    x: entity.x + (entity.width || 40) / 2,
-    y: entity.y + (entity.height || 40) / 2,
-  };
-}
-function playerNoise() {
-  return player.crouch ? 5 : keys.has("shift") ? 100 : 38;
-}
-function isVisible(guard) {
-  const p = center(player);
-  const g = center(guard);
-  const dx = p.x - g.x;
-  const dy = p.y - g.y;
-  const range = player.crouch ? 210 : 390;
-  const targetAngle = Math.atan2(dy, dx);
-  const difference = Math.abs(
-    Math.atan2(
-      Math.sin(targetAngle - guard.angle),
-      Math.cos(targetAngle - guard.angle),
-    ),
+function near(entity, distance) {
+  return (
+    Math.abs(player.x - entity.x) < distance &&
+    Math.abs(player.y - entity.y) < 105
   );
-  return Math.hypot(dx, dy) < range && difference < 0.62;
 }
-function tryMove(dx) {
-  const next = {
-    x: player.x + dx,
-    y: player.y,
-    w: player.width,
-    h: player.height,
-  };
-  if (!solidAt(next)) player.x += dx;
+function currentTarget() {
+  const terminal = terminals.find((item) => !item.found && near(item, 80));
+  if (terminal) return { type: "terminal", item: terminal };
+  const door = doors.find((item) => !item.open && near(item, 100));
+  if (door) return { type: "door", item: door };
+  if (state.complete && near(train, 190))
+    return { type: "extract", item: train };
+  return null;
 }
-function jump() {
-  if (player.grounded && player.stamina > 8) {
-    player.vy = -9.2;
-    player.grounded = false;
-    player.stamina -= 8;
-  }
-}
-function fire() {
-  if (player.fireCooldown > 0 || player.ammo <= 0) return;
-  const p = center(player);
-  const targetX = mouse.x + camera.x;
-  const targetY = mouse.y + camera.y;
-  const angle = Math.atan2(targetY - p.y, targetX - p.x);
-  bullets.push({
-    x: p.x,
-    y: p.y + 6,
-    vx: Math.cos(angle) * 12,
-    vy: Math.sin(angle) * 12,
-    life: 55,
-  });
-  player.ammo -= 1;
-  player.fireCooldown = 15;
-  state.alert = Math.max(state.alert, 75);
+function showMessage(text) {
+  const message = document.getElementById("message-card");
+  message.textContent = text;
+  message.classList.remove("hidden");
+  clearTimeout(showMessage.timer);
+  showMessage.timer = setTimeout(() => message.classList.add("hidden"), 2500);
 }
 function interact() {
-  const nearBeacon = beacons.find(
-    (beacon) =>
-      !beacon.activated &&
-      Math.hypot(player.x - beacon.x, player.y - beacon.y) < 85,
-  );
-  const item = loot.find(
-    (entry) =>
-      !entry.taken && Math.hypot(player.x - entry.x, player.y - entry.y) < 60,
-  );
-  if (nearBeacon) {
-    nearBeacon.activated = true;
-    player.cells += 1;
-    state.score += 300;
-    state.alert = Math.max(0, state.alert - 25);
-    play(sounds.pickup);
+  const target = currentTarget();
+  if (!target) return;
+  if (target.type === "terminal") {
+    target.item.found = true;
+    state.score += 100;
+    showMessage(
+      `${target.item.label} // FRAGMENT ${target.item.fragment} TROUVÉ`,
+    );
+    updateHud();
     return;
   }
-  if (item) {
-    item.taken = true;
-    if (item.kind === "ammo") player.ammo += 6;
-    if (item.kind === "med") player.health = Math.min(100, player.health + 25);
-    if (item.kind === "scrap") player.scrap += 1;
-    state.score += 80;
-    play(sounds.pickup);
+  if (target.type === "door") {
+    openCodePanel(target.item);
+    return;
   }
+  if (target.type === "extract") finish();
 }
-function updatePlayer(dt) {
+function openCodePanel(door) {
+  const panel = document.getElementById("code-panel");
+  panel.dataset.code = door.code;
+  panel.dataset.door = doors.indexOf(door);
+  document.getElementById("code-title").textContent = door.label;
+  document.getElementById("code-hint").textContent =
+    "Le code se construit avec les fragments trouvés dans les terminaux.";
+  document.getElementById("code-readout").textContent = door.code
+    .split("")
+    .map((digit, index) =>
+      terminals.find(
+        (terminal) => terminal.fragment === digit && terminal.found,
+      )
+        ? digit
+        : "_",
+    )
+    .join(" ");
+  document.getElementById("code-input").value = "";
+  panel.classList.remove("hidden");
+  document.getElementById("code-input").focus();
+}
+function submitCode() {
+  const panel = document.getElementById("code-panel");
+  const door = doors[Number(panel.dataset.door)];
+  const input = document.getElementById("code-input").value;
+  if (
+    input === door.code &&
+    door.code
+      .split("")
+      .every((digit) =>
+        terminals.some(
+          (terminal) => terminal.fragment === digit && terminal.found,
+        ),
+      )
+  ) {
+    door.open = true;
+    state.score += 300;
+    state.alert = Math.max(0, state.alert - 25);
+    panel.classList.add("hidden");
+    showMessage(`${door.label} // ACCÈS AUTORISÉ`);
+  } else {
+    state.alert = Math.min(100, state.alert + 35);
+    showMessage("CODE REFUSÉ // TRACE D’INTRUSION ENREGISTRÉE");
+  }
+  updateHud();
+}
+function movePlayer(dt) {
   const left = keys.has("a");
   const right = keys.has("d");
-  const sprint = keys.has("shift") && player.stamina > 1;
-  player.crouch = keys.has("control") || keys.has("c");
-  const speed = (sprint ? 4.15 : player.crouch ? 1.2 : 2.55) * dt;
+  const speed = keys.has("shift") ? 4.4 : 2.7;
   if (left || right) {
     const direction = right ? 1 : -1;
     player.facing = direction;
-    tryMove(direction * speed);
+    const next = {
+      x: player.x + direction * speed * dt,
+      y: player.y,
+      w: player.width,
+      h: player.height,
+    };
+    if (!solid(next)) player.x += direction * speed * dt;
   }
-  player.vx = right ? 1 : left ? -1 : 0;
-  if ((keys.has("w") || keys.has(" ")) && !keys.has("jumpLock")) {
-    jump();
-    keys.add("jumpLock");
-  }
-  if (!keys.has("w") && !keys.has(" ")) keys.delete("jumpLock");
-  player.vy += 0.48 * dt;
+  player.vy += 0.46 * dt;
   const nextY = player.y + player.vy * dt;
   const floor = platforms.find(
     (platform) =>
       player.x + player.width > platform.x &&
       player.x < platform.x + platform.w &&
-      player.y + player.height <= platform.y + 24 &&
+      player.y + player.height <= platform.y + 28 &&
       nextY + player.height >= platform.y,
   );
   if (floor && player.vy >= 0) {
@@ -327,324 +246,278 @@ function updatePlayer(dt) {
     player.y = nextY;
     player.grounded = false;
   }
-  if (player.y > world.height) {
-    player.x = Math.max(120, player.x - 220);
-    player.y = 500;
-    player.health -= 20;
+  if (
+    (keys.has("w") || keys.has(" ")) &&
+    player.grounded &&
+    !keys.has("jumpLock")
+  ) {
+    player.vy = -9;
+    player.grounded = false;
+    keys.add("jumpLock");
   }
-  player.stamina += (sprint ? -24 : 15) * dt;
-  player.stamina = Math.max(0, Math.min(100, player.stamina));
-  player.fireCooldown = Math.max(0, player.fireCooldown - dt);
-  player.invulnerable = Math.max(0, player.invulnerable - dt);
-  if (mouse.down || keys.has("f")) fire();
+  if (!keys.has("w") && !keys.has(" ")) keys.delete("jumpLock");
+  player.cooldown = Math.max(0, player.cooldown - dt);
+  if (keys.has("f") || mouse.down) fire();
+  if (player.y > 850) {
+    player.x = Math.max(100, player.x - 200);
+    player.y = 500;
+    player.health -= 15;
+  }
 }
-function updateGuards(dt) {
-  guards.forEach((guard) => {
-    const p = center(player);
-    const g = center(guard);
-    const detected =
-      isVisible(guard) ||
-      (playerNoise() > 70 &&
-        Math.abs(player.x - guard.x) < 260 &&
-        Math.abs(player.y - guard.y) < 110);
-    if (detected) {
-      guard.state = "alert";
-      state.alert = Math.min(100, state.alert + 31 * dt);
-      guard.angle = Math.atan2(p.y - g.y, p.x - g.x);
-    } else if (guard.state === "alert") {
-      state.alert = Math.max(0, state.alert - 5 * dt);
-      if (state.alert < 14) guard.state = "search";
-    } else {
-      guard.state = "patrol";
-      guard.x += guard.direction * guard.speed * dt;
-      guard.angle = guard.direction > 0 ? 0 : Math.PI;
-      if (guard.x < guard.min || guard.x > guard.max) guard.direction *= -1;
-    }
-    if (
-      guard.state === "alert" &&
-      Math.hypot(p.x - g.x, p.y - g.y) < 42 &&
-      player.invulnerable <= 0
-    ) {
-      player.health -= 18;
-      player.invulnerable = 35;
-      play(sounds.hit);
-    }
+function fire() {
+  if (player.cooldown > 0 || player.ammo <= 0) return;
+  const angle = Math.atan2(
+    mouse.y + camera.y - player.y,
+    mouse.x + camera.x - player.x,
+  );
+  bullets.push({
+    x: player.x + 24,
+    y: player.y + 25,
+    vx: Math.cos(angle) * 11,
+    vy: Math.sin(angle) * 11,
+    life: 50,
   });
+  player.ammo -= 1;
+  player.cooldown = 16;
+  state.alert = Math.min(100, state.alert + 15);
+}
+function updateDrones(dt) {
+  drones.forEach((drone) => {
+    drone.x += drone.dir * 0.7 * dt;
+    if (drone.x < drone.min || drone.x > drone.max) drone.dir *= -1;
+    const visible =
+      Math.abs(player.x - drone.x) < 260 && Math.abs(player.y - drone.y) < 105;
+    if (visible) {
+      drone.state = "alert";
+      state.alert = Math.min(100, state.alert + 18 * dt);
+    } else drone.state = "patrol";
+    if (
+      drone.state === "alert" &&
+      Math.abs(player.x - drone.x) < 45 &&
+      player.health > 0
+    )
+      player.health -= 9 * dt;
+  });
+  state.alert = Math.max(0, state.alert - 7 * dt);
 }
 function updateBullets(dt) {
   bullets.forEach((bullet) => {
     bullet.x += bullet.vx * dt;
     bullet.y += bullet.vy * dt;
     bullet.life -= dt;
-    guards.forEach((guard) => {
-      if (Math.hypot(bullet.x - guard.x, bullet.y - guard.y) < 28) {
-        guard.state = "search";
-        guard.x += 70;
+    drones.forEach((drone) => {
+      if (Math.hypot(bullet.x - drone.x, bullet.y - drone.y) < 28) {
+        drone.state = "disabled";
         bullet.life = 0;
-        state.score += 55;
+        state.score += 80;
       }
     });
   });
-  for (let index = bullets.length - 1; index >= 0; index -= 1)
-    if (bullets[index].life <= 0) bullets.splice(index, 1);
+  for (let i = bullets.length - 1; i >= 0; i -= 1)
+    if (bullets[i].life <= 0) bullets.splice(i, 1);
 }
-function updateCamera() {
-  camera.x += (player.x - WIDTH * 0.35 - camera.x) * 0.1;
-  camera.y += (player.y - HEIGHT * 0.55 - camera.y) * 0.1;
-  camera.x = Math.max(0, Math.min(world.width - WIDTH, camera.x));
-  camera.y = Math.max(0, Math.min(world.height - HEIGHT, camera.y));
-}
-function updateObjective() {
-  const complete = beacons.every((beacon) => beacon.activated);
-  document.getElementById("objective").textContent = complete
-    ? "Rejoindre le train d'évacuation"
-    : "Activer les 4 balises de secteur";
-  document.getElementById("objective-detail").textContent = complete
-    ? "4 / 4 balises • extraction ouverte"
-    : `${player.cells} / 4 balises • explorer la Dustline`;
-  document.getElementById("health-value").textContent = Math.max(
+function updateHud() {
+  const found = terminals.filter((terminal) => terminal.found).length;
+  document.getElementById("objective").textContent = doors.every(
+    (door) => door.open,
+  )
+    ? "Atteindre le train d’extraction"
+    : "Trouver les fragments et ouvrir les portes";
+  document.getElementById("objective-detail").textContent =
+    `${found} / ${terminals.length} fragments • ${doors.filter((door) => door.open).length} / ${doors.length} portes`;
+  document.getElementById("code-fragments").textContent =
+    `CODE FRAGMENTS ${found}`;
+  document.getElementById("access-state").textContent =
+    `${doors.filter((door) => door.open).length} / ${doors.length} DOORS OPEN`;
+  document.getElementById("health").textContent = Math.max(
     0,
     Math.round(player.health),
   );
-  document.getElementById("stamina-value").textContent = Math.round(
-    player.stamina,
-  );
-  document.getElementById("health-meter").style.width =
+  document.getElementById("health-bar").style.width =
     `${Math.max(0, player.health)}%`;
-  document.getElementById("stamina-meter").style.width = `${player.stamina}%`;
-  document.getElementById("scrap-count").textContent =
-    `CELLS ${String(player.cells).padStart(2, "0")}`;
-  document.getElementById("medkit-count").textContent =
-    `SCRAP ${String(player.scrap).padStart(2, "0")}`;
-  document.getElementById("ammo-count").textContent =
-    `AMMO ${String(player.ammo).padStart(2, "0")}`;
+  document.getElementById("alert-level").textContent =
+    `${Math.round(state.alert)}%`;
+  document.getElementById("alert-bar").style.width = `${state.alert}%`;
   document.getElementById("mission-state").textContent =
-    state.alert > 65 ? "PURSUIT" : state.alert > 20 ? "SEARCH" : "DUSTLINE RUN";
-  document
-    .getElementById("alert-banner")
-    .classList.toggle("hidden", state.alert < 65);
-  const near =
-    beacons.some(
-      (beacon) =>
-        !beacon.activated &&
-        Math.hypot(player.x - beacon.x, player.y - beacon.y) < 85,
-    ) ||
-    loot.some(
-      (item) =>
-        !item.taken && Math.hypot(player.x - item.x, player.y - item.y) < 60,
-    );
-  document.getElementById("interact-prompt").classList.toggle("hidden", !near);
+    state.alert > 60
+      ? "TRACE ACTIVE"
+      : doors.every((door) => door.open)
+        ? "EXTRACTION"
+        : "LOCKDOWN";
+  const target = currentTarget();
+  const prompt = document.getElementById("world-prompt");
+  prompt.classList.toggle("hidden", !target);
+  if (target)
+    prompt.textContent =
+      target.type === "door"
+        ? "[ E ] SAISIR LE CODE"
+        : target.type === "extract"
+          ? "[ E ] EXTRAIRE"
+          : "[ E ] SCANNER LE TERMINAL";
 }
 function drawImage(name, x, y, width, height, alpha = 1) {
-  const image = images[name];
-  if (!image.complete || !image.naturalWidth) return false;
+  if (!ready(images[name])) return false;
   ctx.globalAlpha = alpha;
-  ctx.drawImage(image, x, y, width, height);
+  ctx.drawImage(images[name], x, y, width, height);
   ctx.globalAlpha = 1;
   return true;
 }
-function drawWorld() {
-  ctx.fillStyle = "#131f20";
-  ctx.fillRect(0, 0, WIDTH, HEIGHT);
-  if (images.sky.complete) {
-    ctx.globalAlpha = 0.7;
-    ctx.drawImage(
-      images.sky,
-      -camera.x * 0.06,
-      -camera.y * 0.02,
-      world.width,
-      HEIGHT,
-    );
-    ctx.globalAlpha = 1;
-  }
-  if (images.horizon.complete) {
-    ctx.globalAlpha = 0.35;
-    ctx.drawImage(
-      images.horizon,
-      -camera.x * 0.15,
-      190 - camera.y * 0.08,
-      world.width,
-      520,
-    );
+function drawSprite(name, x, y, width, height) {
+  if (!ready(images[name])) return false;
+  const image = images[name];
+  const frameWidth = image.naturalWidth / 6;
+  ctx.drawImage(
+    image,
+    0,
+    0,
+    frameWidth,
+    image.naturalHeight,
+    x,
+    y,
+    width,
+    height,
+  );
+  return true;
+}
+function draw() {
+  ctx.fillStyle = "#071015";
+  ctx.fillRect(0, 0, W, H);
+  if (ready(images.backdrop)) {
+    ctx.globalAlpha = 0.42;
+    ctx.drawImage(images.backdrop, -camera.x * 0.16, 0, world.width, H);
     ctx.globalAlpha = 1;
   }
   ctx.save();
   ctx.translate(-camera.x, -camera.y);
-  ctx.fillStyle = "rgba(7,14,16,.72)";
+  ctx.fillStyle = "rgba(5,11,15,.75)";
   ctx.fillRect(0, 0, world.width, world.height);
-  if (images.terrain.complete) {
-    ctx.globalAlpha = 0.16;
-    ctx.drawImage(images.terrain, 0, 0, world.width, world.height);
-    ctx.globalAlpha = 1;
+  ctx.strokeStyle = "rgba(97,230,212,.07)";
+  for (let x = 0; x < world.width; x += 64) {
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, 900);
+    ctx.stroke();
+  }
+  for (let y = 0; y < 900; y += 64) {
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(world.width, y);
+    ctx.stroke();
   }
   platforms.forEach((platform) => {
-    ctx.fillStyle = "#293a35";
+    ctx.fillStyle = "#111e24";
     ctx.fillRect(platform.x, platform.y, platform.w, platform.h);
-    ctx.fillStyle = "rgba(214,237,104,.18)";
-    ctx.fillRect(platform.x, platform.y, platform.w, 5);
-    ctx.strokeStyle = "rgba(232,234,217,.16)";
+    ctx.fillStyle = "#1c4246";
+    ctx.fillRect(platform.x, platform.y, platform.w, 4);
+    ctx.strokeStyle = "rgba(97,230,212,.35)";
     ctx.strokeRect(platform.x, platform.y, platform.w, platform.h);
-  });
-  hazards.forEach((hazard) => {
-    ctx.fillStyle = "#ef765c";
-    for (let x = hazard.x; x < hazard.x + hazard.w; x += 12) {
-      ctx.beginPath();
-      ctx.moveTo(x, hazard.y + 30);
-      ctx.lineTo(x + 6, hazard.y);
-      ctx.lineTo(x + 12, hazard.y + 30);
-      ctx.fill();
+    for (let x = platform.x + 14; x < platform.x + platform.w; x += 48) {
+      ctx.fillStyle = "#162d32";
+      ctx.fillRect(x, platform.y + 15, 26, 5);
     }
   });
-  beacons.forEach((beacon) => {
-    ctx.fillStyle = beacon.activated ? "#d6ed68" : "#e7b45d";
-    ctx.fillRect(beacon.x - 5, beacon.y - 80, 10, 80);
+  doors.forEach((door) => {
+    ctx.fillStyle = door.open ? "rgba(97,230,212,.2)" : "#171d29";
+    ctx.fillRect(door.x, door.y, 34, door.h);
+    ctx.strokeStyle = door.open ? "#61e6d4" : "#ff5c91";
+    ctx.lineWidth = 3;
+    ctx.strokeRect(door.x, door.y, 34, door.h);
+    ctx.fillStyle = door.open ? "#61e6d4" : "#ff5c91";
+    ctx.fillRect(door.x - 10, door.y - 16, 54, 5);
+    ctx.font = "8px Space Mono";
+    ctx.fillText(
+      door.open ? "OPEN" : "LOCKED",
+      door.x - 15,
+      door.y + door.h + 18,
+    );
+  });
+  terminals.forEach((terminal) => {
+    ctx.fillStyle = terminal.found ? "#61e6d4" : "#e6ed6b";
+    ctx.fillRect(terminal.x, terminal.y, 28, 54);
+    ctx.fillStyle = "#071015";
+    ctx.fillRect(terminal.x + 5, terminal.y + 8, 18, 18);
+    ctx.fillStyle = terminal.found ? "#61e6d4" : "#ff5c91";
+    ctx.fillRect(terminal.x + 9, terminal.y + 13, 10, 3);
+  });
+  drones.forEach((drone) => {
+    ctx.globalAlpha = drone.state === "alert" ? 0.22 : 0.08;
+    ctx.fillStyle = drone.state === "alert" ? "#ff5c91" : "#e6ed6b";
     ctx.beginPath();
     ctx.arc(
-      beacon.x,
-      beacon.y - 85,
-      beacon.activated ? 16 : 11 + Math.sin(performance.now() / 180) * 3,
-      0,
-      Math.PI * 2,
+      drone.x,
+      drone.y,
+      190,
+      Math.PI * (drone.dir > 0 ? 1.3 : 0.3),
+      Math.PI * (drone.dir > 0 ? 1.8 : 0.8),
     );
+    ctx.lineTo(drone.x, drone.y);
     ctx.fill();
-    ctx.fillStyle = "#0c1717";
-    ctx.fillRect(beacon.x - 18, beacon.y - 45, 36, 22);
-  });
-  loot.forEach((item) => {
-    if (!item.taken) {
-      const icon =
-        item.kind === "ammo" ? "ammo" : item.kind === "med" ? "gem" : "coin";
-      drawImage(icon, item.x - 15, item.y - 25, 30, 30) ||
-        ((ctx.fillStyle = item.kind === "med" ? "#ef765c" : "#e7b45d"),
-        ctx.fillRect(item.x - 10, item.y - 20, 20, 20));
+    ctx.globalAlpha = 1;
+    if (!drawSprite("enemy", drone.x - 20, drone.y - 35, 42, 50)) {
+      ctx.fillStyle = drone.state === "disabled" ? "#405053" : "#ff5c91";
+      ctx.fillRect(drone.x - 18, drone.y - 22, 36, 28);
     }
-  });
-  guards.forEach((guard) => {
-    ctx.save();
-    ctx.globalAlpha = guard.state === "alert" ? 0.2 : 0.09;
-    ctx.fillStyle = guard.state === "alert" ? "#ef765c" : "#e7b45d";
-    ctx.beginPath();
-    ctx.moveTo(guard.x + 20, guard.y + 30);
-    ctx.arc(
-      guard.x + 20,
-      guard.y + 30,
-      300,
-      guard.angle - 0.5,
-      guard.angle + 0.5,
-    );
-    ctx.lineTo(guard.x + 20, guard.y + 30);
-    ctx.fill();
-    ctx.restore();
-    drawImage("enemy", guard.x, guard.y, 44, 54) ||
-      ((ctx.fillStyle = guard.state === "alert" ? "#ef765c" : "#e7b45d"),
-      ctx.fillRect(guard.x, guard.y, 40, 48));
   });
   bullets.forEach((bullet) => {
-    ctx.fillStyle = "#d6ed68";
-    ctx.fillRect(bullet.x - 3, bullet.y - 2, 10, 4);
+    ctx.fillStyle = "#e6ed6b";
+    ctx.fillRect(bullet.x, bullet.y, 10, 3);
   });
-  drawImage("player", player.x, player.y, player.width, player.height) ||
-    ((ctx.fillStyle = "#d6ed68"),
-    ctx.fillRect(player.x, player.y, player.width, player.height));
-  if (player.crouch) {
-    ctx.fillStyle = "rgba(214,237,104,.26)";
-    ctx.fillRect(
-      player.x - 4,
-      player.y + player.height - 5,
-      player.width + 8,
-      5,
-    );
+  if (doors.every((door) => door.open)) {
+    ctx.strokeStyle = "#61e6d4";
+    ctx.lineWidth = 3;
+    ctx.strokeRect(train.x, train.y, train.w, train.h);
+    ctx.fillStyle = "#61e6d4";
+    ctx.font = "11px Space Mono";
+    ctx.fillText("EXTRACTION NODE", train.x + 35, train.y + 75);
   }
-  ctx.fillStyle = "#e7b45d";
-  ctx.fillRect(train.x, train.y, train.w, train.h);
-  ctx.fillStyle = "#101817";
-  ctx.fillRect(train.x + 25, train.y + 30, train.w - 50, 55);
-  ctx.fillStyle = "#d6ed68";
-  ctx.font = "11px Space Mono";
-  ctx.fillText("EVAC TRAIN", train.x + 76, train.y + 116);
+  drawSprite("player", player.x, player.y, player.width, player.height) ||
+    ((ctx.fillStyle = "#e6ed6b"),
+    ctx.fillRect(player.x, player.y, player.width, player.height));
   ctx.restore();
 }
-function finish(success) {
-  state.running = false;
-  document.getElementById("result-panel").classList.remove("hidden");
-  document.getElementById("result-kicker").textContent = success
-    ? "RUN COMPLETE"
-    : "SIGNAL LOST";
-  document.getElementById("result-title").textContent = success
-    ? "Le train part."
-    : "La Dustline t’a repéré.";
-  document.getElementById("result-copy").textContent = success
-    ? `Traversée réussie. Score : ${state.score}.`
-    : "Le secteur est en alerte. Recommence en restant dans l’ombre.";
-  if (success) play(sounds.win);
+function finish() {
+  state.complete = true;
+  showMessage(`EXTRACTION RÉUSSIE // SCORE ${state.score}`);
 }
 function update(dt) {
-  if (!state.running || state.paused) return;
-  updatePlayer(dt);
-  updateGuards(dt);
+  if (state.paused || state.complete) return;
+  movePlayer(dt);
+  updateDrones(dt);
   updateBullets(dt);
-  if (
-    beacons.every((beacon) => beacon.activated) &&
-    player.x > train.x - 140 &&
-    player.x < train.x + train.w
-  )
-    finish(true);
-  if (player.health <= 0) finish(false);
   updateCamera();
-  updateObjective();
+  updateHud();
+  if (player.health <= 0) {
+    player.health = 100;
+    player.x = 140;
+    showMessage("SIGNAL PERDU // RETOUR AU POINT DE DÉPART");
+  }
+}
+function updateCamera() {
+  camera.x += (player.x - W * 0.32 - camera.x) * 0.12;
+  camera.x = Math.max(0, Math.min(world.width - W, camera.x));
 }
 function loop(time) {
-  const dt = Math.min(2, (time - state.lastTime) / 16.67 || 1);
-  state.lastTime = time;
+  const dt = Math.min(2.2, (time - state.last || 16) / 16.67);
+  state.last = time;
   update(dt);
-  drawWorld();
+  draw();
   requestAnimationFrame(loop);
 }
-function resetGame() {
-  player.x = 160;
-  player.y = 560;
-  player.health = 100;
-  player.stamina = 100;
-  player.cells = 0;
-  player.scrap = 0;
-  player.ammo = 12;
-  state.running = true;
-  state.paused = false;
-  state.alert = 0;
-  state.score = 0;
-  beacons.forEach((beacon) => {
-    beacon.activated = false;
-  });
-  loot.forEach((item) => {
-    item.taken = false;
-  });
-  document.getElementById("result-panel").classList.add("hidden");
-}
-
 window.addEventListener("keydown", (event) => {
   const key = event.key.toLowerCase();
-  if (
-    ["a", "d", "w", " ", "shift", "control", "e", "escape", "c", "f"].includes(
-      key,
-    )
-  )
+  if (["a", "d", "w", " ", "e", "f", "shift"].includes(key))
     event.preventDefault();
   keys.add(key);
   if (key === "e" && !event.repeat) interact();
-  if (key === "escape" && !event.repeat) {
-    state.paused = !state.paused;
-    document
-      .getElementById("pause-panel")
-      .classList.toggle("hidden", !state.paused);
-  }
+  if (key === "escape" && !event.repeat) state.paused = !state.paused;
 });
 window.addEventListener("keyup", (event) =>
   keys.delete(event.key.toLowerCase()),
 );
 canvas.addEventListener("mousemove", (event) => {
   const rect = canvas.getBoundingClientRect();
-  mouse.x = ((event.clientX - rect.left) * WIDTH) / rect.width;
-  mouse.y = ((event.clientY - rect.top) * HEIGHT) / rect.height;
+  mouse.x = ((event.clientX - rect.left) * W) / rect.width;
+  mouse.y = ((event.clientY - rect.top) * H) / rect.height;
 });
 canvas.addEventListener("mousedown", () => {
   mouse.down = true;
@@ -653,10 +526,13 @@ canvas.addEventListener("mousedown", () => {
 window.addEventListener("mouseup", () => {
   mouse.down = false;
 });
-document.getElementById("resume-button").addEventListener("click", () => {
-  state.paused = false;
-  document.getElementById("pause-panel").classList.add("hidden");
+document.getElementById("code-submit").addEventListener("click", submitCode);
+document
+  .getElementById("code-close")
+  .addEventListener("click", () =>
+    document.getElementById("code-panel").classList.add("hidden"),
+  );
+document.getElementById("code-input").addEventListener("keydown", (event) => {
+  if (event.key === "Enter") submitCode();
 });
-document.getElementById("retry-button").addEventListener("click", resetGame);
-resetGame();
 requestAnimationFrame(loop);

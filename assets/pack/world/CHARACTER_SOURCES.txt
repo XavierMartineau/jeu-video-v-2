@@ -1,0 +1,14 @@
+AFTERLIGHT // CHARACTER SOURCES
+
+PLAYER
+Source: https://merakintsugi.itch.io/platformer-character-pack
+Usage: personnage joueur
+
+ENEMIES
+Source: https://penusbmic.itch.io/sci-fi-character-pack-12
+Usage: personnages ennemis et silhouettes hostiles
+
+NOTE
+Les packs externes sont conserves comme references de direction artistique.
+Les sprites actuellement charges par le prototype viennent du pack local
+post-apocalypse-survivor conserve dans ce dossier.
