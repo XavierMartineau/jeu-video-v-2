@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#0a1114" />
+    <title>Afterlight // Dead City</title>
+    <link rel="stylesheet" href="src/styles/main.css" />
+  </head>
+  <body>
+    <main class="ops-shell">
+      <header class="ops-header">
+        <a class="ops-brand" href="index.html"
+          ><i></i> AFTERLIGHT <b>//</b> DEAD CITY</a
+        >
+        <div class="ops-signal">
+          <span></span> RELAY 01
+          <strong id="mission-state">INFILTRATION</strong>
+        </div>
+      </header>
+      <section class="game-stage" aria-label="Mission furtive Afterlight">
+        <canvas id="game" width="1280" height="720"></canvas>
+        <div class="mission-hud">
+          <div class="hud-card objective-card">
+            <small>RUN PROTOCOL</small>
+            <strong id="objective">Traverser les 4 secteurs</strong>
+            <span id="objective-detail"
+              >0 / 4 balises • rejoindre le train d'évacuation</span
+            >
+          </div>
+          <div class="hud-card vitals-card">
+            <div class="hud-title">
+              <span>VITALITÉ</span><b id="health-value">100</b>
+            </div>
+            <div class="meter"><i id="health-meter"></i></div>
+            <div class="hud-title">
+              <span>ENDURANCE</span><b id="stamina-value">100</b>
+            </div>
+            <div class="meter stamina"><i id="stamina-meter"></i></div>
+          </div>
+          <div class="hud-card inventory-card">
+            <small>SAC DE TERRAIN</small>
+            <div class="inventory-items">
+              <span id="scrap-count">CELLS 00</span
+              ><span id="medkit-count">MED 01</span
+              ><span id="ammo-count">AMMO 12</span>
+            </div>
+          </div>
+        </div>
+        <div id="alert-banner" class="alert-banner hidden">
+          PATROUILLE ACTIVE // RESTE DANS L’OMBRE
+        </div>
+        <div id="interact-prompt" class="interact-prompt hidden">
+          [ E ] ACTIVER
+        </div>
+        <div id="pause-panel" class="pause-panel hidden">
+          <p class="eyebrow">RUN PAUSED</p>
+          <h1>Le désert<br /><em>attend.</em></h1>
+          <p>Le convoi continue d’avancer. Reprends la traversée.</p>
+          <button id="resume-button" class="ops-button">
+            REPRENDRE <b>→</b>
+          </button>
+          <a href="index.html" class="back-link">QUITTER LA DUSTLINE</a>
+        </div>
+        <div id="result-panel" class="result-panel hidden">
+          <p id="result-kicker" class="eyebrow">RUN COMPLETE</p>
+          <h1 id="result-title">Le train part.</h1>
+          <p id="result-copy">
+            Tu as traversé la Dustline. Le convoi quitte le secteur avant
+            l’aube.
+          </p>
+          <button id="retry-button" class="ops-button">REJOUER <b>↻</b></button>
+          <a href="index.html" class="back-link">RETOUR À L’ACCUEIL</a>
+        </div>
+      </section>
+      <footer class="ops-footer">
+        <span>A / D AVANCER</span><span>W / ESPACE SAUTER</span
+        ><span>CTRL SE BAISSER</span><span>E ACTIVER</span
+        ><span>CLIC / F TIRER</span><span>ESC PAUSE</span>
+      </footer>
+    </main>
+    <script src="src/game.js"></script>
+  </body>
+</html>
