@@ -78,6 +78,7 @@ a {
 }
 
 .home-nav {
+  flex-wrap: wrap;
   border-bottom: 1px solid var(--line);
   padding-bottom: 18px;
 }
@@ -110,6 +111,8 @@ a {
 }
 
 .home-brand {
+  min-width: 0;
+  flex: 1 1 auto;
   gap: 12px;
   color: var(--paper);
   font:
@@ -175,8 +178,8 @@ h2 {
 h1 {
   max-width: 680px;
   font-size: clamp(76px, 12vw, 166px);
-  line-height: 0.78;
-  letter-spacing: -0.02em;
+  line-height: 0.88;
+  letter-spacing: 0;
 }
 
 h1 em {
@@ -186,7 +189,7 @@ h1 em {
 
 .hero-intro {
   max-width: 440px;
-  margin: 34px 0 35px;
+  margin: 42px 0 35px;
   color: #c0c8b8;
   font-size: 12px;
   line-height: 1.8;
@@ -437,11 +440,21 @@ h1 em {
     font-size: 13px;
   }
 
+  .home-nav {
+    align-items: flex-start;
+    gap: 16px 12px;
+  }
+
+  .home-brand {
+    flex-basis: 100%;
+  }
+
   .signal-state {
     font-size: 7px;
   }
 
   .home-tools {
+    width: 100%;
     flex-wrap: wrap;
     justify-content: flex-end;
   }
