@@ -10,7 +10,7 @@ const state = { alert: 0, score: 0, paused: false, complete: false, last: 0 };
 const images = {};
 const paths = {
   player:
-    "assets/pack/world/post-apocalypse-survivor/Character/Main/Character_side_idle-Sheet6.png",
+    "assets/pack/world/post-apocalypse-survivor/Character/Main/Idle/Character_side_idle-Sheet6.png",
   enemy:
     "assets/pack/world/post-apocalypse-survivor/Enemies/Zombie_Axe/Zombie_Axe_Side-left_Idle-Sheet6.png",
   factory: "assets/pack/tilesets/factory-cyberpunk/1 Tiles/Tileset.png",
